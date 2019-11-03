@@ -1,0 +1,30 @@
+
+/* Tags */
+input{
+    margin: 5px;
+}
+
+header{
+    text-align: center;
+}   
+
+
+
+/* Classes */
+.formulario{
+    margin: auto;
+    width: 255px;
+    /*Apenas pra visualizar melhor a div, dps retirar*/
+    background: red;
+    align-self: center;
+}
+
+.botoes{
+    text-align: center;
+}
+
+
+
+/* IDs */
+
+
