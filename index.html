@@ -1,58 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="utf-8">
-        <title>AJuDE - Login</title>
-        
-        <link rel="stylesheet" href="estilo.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lab 1 - FrontEnd</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script type="module" src="app.js" ></script>
+    
+   <style>
 
-        </style>
-    </head>
-        
-    <body>
-        <header>
-            <h1>AJUDE</h1> 
-            <h3>AquiJUntosDoandoEsperança</h3>   
-        </header>
-
-        <div id = "viewer"></div>
-
-        <template id ="login">
-            <div class = "formulario">
-                <form> 
-                    <input type="text" name="email" placeholder="E-mail">
-                    <input type="password" name="senha" placeholder="Senha">
-                </form>
-                <div class="botoes">
-                    <button>Logar</button><br>
-                    <button>Ir para Cadastro</button>
-                </div>  
-            </div>
-
-        </template>
-        
-
-        <template id ="cadastro">
-            <div class = "formulario">
-                <form> 
-                <input type="text" name="primeiro_nome" placeholder="Primeiro nome">
-                <input type="text" name="ultimo_nome" placeholder="Último nome">
-                <input type="text" name="email" placeholder="E-mail">
-                <input type="text" name="cartao" placeholder="Nºcartão">
-                <input type="password" name="senha" placeholder="Senha">                
-                </form>
-                <div class="botoes">
-                    <button>Cadastrar</button><br>
-                    <button>Ir para Login</button>
-                </div>
-            </div> 
-        </template>
-
-
-        <footer>
-            
-
-        </footer>
-        <script src="caso1.js"></script>
-    </body>
+    </style>
+</head>
+<body>
+    <h1>Lista de Disciplinas</h1>
+    <div></div>
+    <div>Disciplina: <input id="nome" type="text"></div>
+    <div>Nota: <input id="nota" type="text"></div>
+    <button>Cadastrar disciplina</button>
+</body>
 </html>
