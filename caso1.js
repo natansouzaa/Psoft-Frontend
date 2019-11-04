@@ -70,10 +70,11 @@ function cadastro(){
 							 "senha": "${senha}"}`,
 					"headers":{"Content-Type":"application/json"}
 				})
-			.then(resposta => resposta.json())
-			// Ajeitar o tratamento da resposta, coloca um aviso de usuario criado (ou nao)
-			// como tratar a excecao pra só aparecer um aviso de usuario ja existente?
-			.then(r => {console.log(r)})
+			.then(resposta => {
+				if(resposta.status == "201"){cadastro_realizado()}
+
+				else{console.log(resposta)}
+			});
 
 		}
 
@@ -86,5 +87,12 @@ function cadastro(){
 	);
 }
 
+function cadastro_realizado(){
+	let $template = document.querySelector("#cadastro_realizado");
+	$viewer.innerHTML = $template.innerHTML;
+
+	let $login = document.querySelector("button");
+	$login.addEventListener('click', login);
+}
 //apenas para testes, enquanto nao tem o mapeamento das rotas
 login();
