@@ -1,23 +1,49 @@
-body{
-    background-color:rgb(32, 32, 61);
-    color:white;
+
+/* Tags */
+input{
+    margin: 5px;
 }
-h1{
-    background-color:grey;
-    color:black;
+
+header{
+    text-align: center;
+}   
+nav{
+	height: 50px;
+	
+}
+footer{
+	background-color: red;
+	height: 75px;
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+	position:absolute;
+    bottom:0;
+
+}
+
+
+/* Classes */
+.formulario{
+    margin: auto;
+    width: 255px;
+    /*Apenas pra visualizar melhor a div, dps retirar*/
+    background: red;
+    align-self: center;
+}
+
+.botoes{
     text-align: center;
 }
-button{
-    margin: 30px;
-
+.links_navegacao{
+	background-color: red;
+	height: 100%;
+	width: 60px;
+	border: 1px;
+	border-color: grey;
 }
 
-.disciplina{
-    max-width: 500px;
-    margin: 30px; 
-    border-width: 0px;
-    border-bottom-width: 3px;
-    border-style: groove;
-    border-color: grey;
-    border-radius: 3px;
-}
+
+/* IDs */
+
+
