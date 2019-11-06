@@ -12,7 +12,7 @@ nav{
 	
 }
 footer{
-	background-color: red;
+	background-color: #B0C4DE;
 	height: 75px;
 	width: 100%;
 	text-align: center;
@@ -46,13 +46,16 @@ li a {
 li a:hover {
     background-color: #111;
 }
-
+body{
+    /*para preservar meus olhos*/
+    background-color: #4682B4;
+}
 /* Classes */
 .formulario{
     margin: auto;
     width: 255px;
     /*Apenas pra visualizar melhor a div, dps retirar*/
-    background: red;
+    background: #D2B48C;
     align-self: center;
 }
 

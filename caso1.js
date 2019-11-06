@@ -1,6 +1,7 @@
 
 let $viewer = document.getElementById("viewer");
-let URI = "http://localhost:8080"
+let URI = "http://localhost:8080";
+let url;
 
 // Renderiza o formulario de login na página
 function login(){
@@ -79,11 +80,6 @@ function cadastro(){
 		}
 
 
-
-
-
-
-
 	);
 }
 
@@ -94,5 +90,21 @@ function cadastro_realizado(){
 	let $login = document.querySelector("button");
 	$login.addEventListener('click', login);
 }
+
 //apenas para testes, enquanto nao tem o mapeamento das rotas
-login();
+ login();
+
+function cadastro_campanha(){
+
+ 	//Recupera o template do login e insere ele na div reservada pro formulário
+	let $template = document.querySelector("#cadastro_campanha");
+	$viewer.innerHTML = $template.innerHTML;
+
+	
+
+
+
+}
+//para lidar com o token: pesquisar sobre
+//localStorage ou indexedDB
+
