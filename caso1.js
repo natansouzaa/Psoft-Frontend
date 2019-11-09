@@ -1,15 +1,15 @@
 let $viewer = document.getElementById("viewer");
 let URI = "http://localhost:8080";
-let url;
+
 
 // Renderiza o formulario de login na página
 function login(){
+	//muda o url
+	location.hash = "#login";
+
 	//seleciona o template do login e insere ele na div reservada pro formulário
 	let $template = document.querySelector("#login");
 	$viewer.innerHTML = $template.innerHTML;
-
-	let $botaoCadastraCampanha = document.querySelectorAll("links_navegacao")[4];
-	$botaoCadastraCampanha.addEventListener('click', cadastro_campanha);
 
 	//Configura o botao p/ voltar pro formulario de cadastro
 	let $botao = document.querySelectorAll("button")[1];
@@ -35,13 +35,19 @@ function login(){
 			)
 			.then(resposta =>resposta.json())
 			/* Mudar para: if codigo = ok, aparecer o usuario logado em algum canto da tela e armazenar o token jwt paras as futuras requisicoes */
-			.then(r =>{console.log(r)}) 
+			.then(r =>{console.log(r)}
+			
+			) 
 		}
 	)	
 }	
 
 //Renderiza o formulario de cadastro na página
 function cadastro(){
+	//muda o link 
+	//window.history.replaceState(null, "", "#login");
+	location.hash = "#cadastro";
+
 	//Recupera o template do login e insere ele na div reservada pro formulário
 	let $template = document.querySelector("#cadastro");
 	$viewer.innerHTML = $template.innerHTML;
@@ -156,3 +162,37 @@ function criaURL (text){
 }
 //para lidar com o token: pesquisar sobre
 //localStorage ou indexedDB
+function carregaPagina(){
+	let hash = location.hash;
+	console.log(hash);
+	let endereco = hash.substring(1,hash.length);
+	this.console.log("endereco: " + endereco);
+	/* Estruturar esse if com
+		const paginas={
+			home: function homepage,
+			cadastro: function cadastro,
+			
+
+
+		}
+		paginas[homepage]()
+		ou callback( paginas[homepage] )
+
+
+	*/
+	if(endereco == "login")
+		login();
+	else if(endereco == "cadastro")
+		cadastro();
+	/* Caso nao tenha nada, carrega a pagina inicial
+		Tá comentado pq eu nao fiz a homepage ainda
+	else
+		homepage();
+	*/
+}
+carregaPagina();
+
+async function carregaLink(){
+	await window.addEventListener("hashchange", carregaPagina)
+}
+carregaLink();
