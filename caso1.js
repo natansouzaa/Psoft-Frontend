@@ -1,4 +1,3 @@
-
 let $viewer = document.getElementById("viewer");
 let URI = "http://localhost:8080";
 let url;
@@ -8,6 +7,9 @@ function login(){
 	//seleciona o template do login e insere ele na div reservada pro formulário
 	let $template = document.querySelector("#login");
 	$viewer.innerHTML = $template.innerHTML;
+
+	let $botaoCadastraCampanha = document.querySelectorAll("links_navegacao")[4];
+	$botaoCadastraCampanha.addEventListener('click', cadastro_campanha);
 
 	//Configura o botao p/ voltar pro formulario de cadastro
 	let $botao = document.querySelectorAll("button")[1];
@@ -100,11 +102,57 @@ function cadastro_campanha(){
 	let $template = document.querySelector("#cadastro_campanha");
 	$viewer.innerHTML = $template.innerHTML;
 
-	
+	//Configura o botao p/ mandar os dados para o cadastro da campanha
+	let $cadastrar = document.querySelectorAll("button")[0];
+	$cadastrar.addEventListener('click',
+
+	function envia_cadastro_campanha(){
+		console.log('enviando o cadastro da campanha');
+		let $formulario = document.querySelectorAll("form");
+		let nome_curto = $formulario.nome_curto.value;
+		let descricao = $formulario.descricao.value;
+		let data_limite = $formulario.data_limite.value;
+		let meta = $formulario.meta.value;
+		let identificadorURL = criaURL(nome_curto);
+
+		fetch(URI + '/campanhas',
+				{
+					"method":"POST",
+					"body":`{"nomeCurto":"${nome_curto}",
+							 "Meta":"${meta}",
+							 "Descricao":"${descricao}",
+							 "identificadorURL":"${identificadorURL},
+							 "DataLimite":"${data_limite}"`,
+					"headers":{"Content-Type":"application/json"}
+				})
+			.then(resposta => {
+				if(resposta.status == "201"){cadastro_campanha_realizado()}
+
+				else{console.log(resposta)}
+			});
+
+		}
 
 
+	);
+}
 
+function cadastro_campanha_realizado(){
+	let $template = document.querySelector("#cadastro_campanha_realizado");
+	$viewer.innerHTML = $template.innerHTML;
+}
+
+function criaURL (text){
+    text = text.toLowerCase();
+    text = text.replace(new RegExp('[ÁÀÂÃ]','gi'), 'a');
+    text = text.replace(new RegExp('[ÉÈÊ]','gi'), 'e');
+    text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i');
+    text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o');
+    text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u');
+    text = text.replace(new RegExp('[Ç]','gi'), 'c');
+    text = text.replace(new RegExp('[ ]','gi'), '-');
+    text = text.replace(new RegExp('[,]','gi'), '');
+    return text;
 }
 //para lidar com o token: pesquisar sobre
 //localStorage ou indexedDB
-

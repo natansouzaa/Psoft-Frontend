@@ -16,11 +16,11 @@
         </header>
         <nav>
             <ul>
-                <li class="links_navegacao"><a href="">link1</a></li>
-                <li class="links_navegacao"><a href="">link1</a></li>
-                <li class="links_navegacao"><a href="">link1</a></li>
-                <li class="links_navegacao"><a href="">link1</a></li>
-
+                <li class="links_navegacao"><a href="">Inicio</a></li>
+                <li class="links_navegacao"><a href="">Cadastrar Usuario</a></li>
+                <li class="links_navegacao"><a href="">Login</a></li>
+                <li class="links_navegacao"><a href="">Cadastrar Campanha</a></li>
+                <li class="links_navegacao"><a href="">Pesquisar Campanha</a></li>
             </ul>
         </nav>
 
@@ -70,27 +70,28 @@
         </template>
 
         <template id ="cadastro_campanha">
-            <div>
+            <div class = "formulario">
                 <form>
-                    <input type="text" name="" placeholder="nome">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-                    <input type="" name="" placeholder="">
-
-
-
+                    <input type="text" name="nome_curto" placeholder="Nome">
+                    <input type="" name="descricao" placeholder="Descrição">
+                    <input type="" name="meta" placeholder="Meta(R$)">
+                    <input type="" name="data_limite" placeholder="Data Limite de Arrecadação">
                 </form>
+                <div class="botoes">
+                    <button>Cadastrar Campanha</button><br>
+                </div>
+            </div>
 
+        </template>
 
-
+        <template id="cadastro_campanha_realizado">
+            <div id="cadastro_campanha_realizado">
+                <p>Cadastro da campanha realizado com sucesso!</p>
             </div>
 
 
         </template>
+        
         <footer>
             
                 rodape
