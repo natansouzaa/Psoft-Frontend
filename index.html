@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>AJuDE - Login</title>
-        
+        <script type="module" src="app.js"></script>
         <link rel="stylesheet" href="estilo.css">
-
-        </style>
+        <link rel="import" href="templates.html">
+        
     </head>
         
     <body>
@@ -17,14 +17,20 @@
         <nav>
             <ul>
                 <li class="links_navegacao"><a href="">Inicio</a></li>
-                <li class="links_navegacao"><a href="#cadastro">Cadastrar Usuario</a></li>
-                <li class="links_navegacao"><a href="#login">Login</a></li>
-                <li class="links_navegacao"><a href="">Cadastrar Campanha</a></li>
+                <li class="links_navegacao"><a href="#/usuarios/cadastro">Cadastrar Usuario</a></li>
+                <li class="links_navegacao"><a href="#/login">Login</a></li>
+                <li class="links_navegacao"><a href="#/campanha/cadastro">Cadastrar Campanha</a></li>
                 <li class="links_navegacao"><a href="">Pesquisar Campanha</a></li>
             </ul>
         </nav>
 
         <div id = "viewer"></div>
+
+
+        <template id = "homepage">
+            <h1 style="text-align: center">homepage - falta implementar</h1>
+        </template>
+
 
         <template id ="login">
             <div class = "formulario">
@@ -37,10 +43,10 @@
                     <button>Ir para Cadastro</button>
                 </div>  
             </div>
-
+    
         </template>
         
-
+    
         <template id ="cadastro">
             <div class = "formulario">
                 <form> 
@@ -56,6 +62,7 @@
                 </div>
             </div> 
         </template>
+    
 
         <template id="cadastro_realizado">
             <div id="cadastro_realizado">
@@ -65,9 +72,8 @@
                     <button>Ir para Login</button>
                 </div>
             </div>
-
-
         </template>
+    
 
         <template id ="cadastro_campanha">
             <div class = "formulario">
@@ -81,21 +87,20 @@
                     <button>Cadastrar Campanha</button><br>
                 </div>
             </div>
-
         </template>
+    
 
         <template id="cadastro_campanha_realizado">
             <div id="cadastro_campanha_realizado">
                 <p>Cadastro da campanha realizado com sucesso!</p>
             </div>
-
-
         </template>
+        
         
         <footer>
             
-                rodape
+                <h1>rodape</h1>
         </footer>
-        <script src="caso1.js"></script>
+        
     </body>
 </html>
