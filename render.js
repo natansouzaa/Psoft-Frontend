@@ -4,6 +4,13 @@
 let $viewer = document.getElementById("viewer");
 let URI = "http://localhost:8080";
 
+function salvarToken(token){
+	window.sessionStorage.setItem('token', token);
+}
+function recuperarToken(){
+	return window.sessionStorage.getItem('token');
+}
+
 
 // Homepage vai ser implementada no caso 9
 export function homepage(){
@@ -44,11 +51,18 @@ export function login(){
 					"headers":{"Content-Type":"application/json"}
 				}
 			)
-			.then(resposta =>resposta.json())
-			/* Mudar para: if codigo = ok, aparecer o usuario logado em algum canto da tela e armazenar o token jwt paras as futuras requisicoes */
-			.then(r =>{console.log(r)}
+			.then(resposta =>{ //ver qual é o status no backend
+                /* Mudar para: if codigo = ok, aparecer o usuario logado
+             em algum canto da tela e armazenar o token jwt paras 
+             as futuras requisicoes */
+                
+                if(resposta.status == "200")
+                    console.log(resposta)
+
+                })
+            
 			
-			) 
+			
 		}
 	)	
 }	
@@ -112,17 +126,19 @@ export function cadastro_usuario_realizado(){
 
 export function cadastro_campanha(){
     
+    //atualiza o link
     location.hash = "#/campanha/cadastro"
+
     //Recupera o template do login e insere ele na div reservada pro formulário
-   let $template = document.querySelector("#cadastro_campanha");
-   console.log($template)
-   $viewer.innerHTML = $template.innerHTML;
+    let $template = document.querySelector("#cadastro_campanha");
+    console.log($template)
+    $viewer.innerHTML = $template.innerHTML;
 
-   //Configura o botao p/ mandar os dados para o cadastro da campanha
-   let $cadastrar = document.querySelectorAll("button")[0];
-   $cadastrar.addEventListener('click',
+    //Configura o botao p/ mandar os dados para o cadastro da campanha
+    let $cadastrar = document.querySelectorAll("button")[0];
+    $cadastrar.addEventListener('click',
 
-   function envia_cadastro_campanha(){
+    function envia_cadastro_campanha(){
        console.log('enviando o cadastro da campanha');
        let $formulario = document.querySelectorAll("form");
        let nome_curto = $formulario.nome_curto.value;
