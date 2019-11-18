@@ -58,12 +58,11 @@ export function login(){
 					if(resposta.status == 200){
 						alert('Login realizado com sucesso!');
 						let dados_resposta = await resposta.json();
-						//console.log(dados_resposta);
+						console.log(dados_resposta);
 						//salva dados da sessão (token e email)
 						salvarToken(dados_resposta.token);
 						window.sessionStorage.setItem('email',email);
-						//console.log(sessionStorage);
-						location.hash=""
+						console.log(sessionStorage);
 					}
 		   })();
 				
