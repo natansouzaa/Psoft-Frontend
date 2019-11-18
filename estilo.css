@@ -1,24 +1,31 @@
 
 /* Tags */
+*{
+    margin: 0;
+    padding: 0;
+}
 input{
     margin: 5px;
 }
 
-header{
+header {
     text-align: center;
 }   
 nav{
 	height: 50px;
-	
+	margin: 0px 5px 5px 5px;
 }
 footer{
 	background-color: #B0C4DE;
-	height: 75px;
+    /*
+        até que se encontre uma solucao definitiva pra esse cara
+    position: absolute;
+    */
 	width: 100%;
 	text-align: center;
 	margin-top: 10px;
-	position:absolute;
     bottom:0;
+	margin: 10px 5px 0px 5px;
 
 }
 
@@ -57,6 +64,7 @@ body{
     /*Apenas pra visualizar melhor a div, dps retirar*/
     background: #D2B48C;
     align-self: center;
+    border-radius: 10px;
 }
 
 .botoes{
@@ -67,11 +75,33 @@ body{
     margin: 0;
     padding: 0;
 }
-
+.clear{
+    clear: both;
+}
 /* IDs */
-
+#viewer{
+    height: 100%;
+}
 #cadastro_realizado{
 
 	text-align: center;
 
+}
+#formulario_campanha{
+    width: 900px;
+    padding-bottom: 5px;
+   
+}
+
+#descricao_campanha{
+    margin: 10px;
+    border: 7px;
+    border-color: black;
+    width: 880px;
+
+}
+#comentarios{
+    background: rgb(211, 208, 205);
+    height: 300px;
+    margin:10px;
 }

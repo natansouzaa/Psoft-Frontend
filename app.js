@@ -16,8 +16,11 @@ function carregaPagina(){
 		case '/login': 
 			render.login();
 			break;
-		case '/campanha/cadastro':
+		case '/campanha':
 			render.cadastro_campanha();
+			break;
+		case '/campanha/pesquisa':
+			render.pesquisa_campanha();
 			break;
 		default: 
 			render.homepage();
@@ -37,17 +40,3 @@ async function carregaLink(){
 }
 carregaLink();
 
-/* Funcao que, teoricamente, transforma uma string 
-com o nome-curto da campanha p/ o formato de link */
-function criaURL (text){
-    text = text.toLowerCase();
-    text = text.replace(new RegExp('[ÁÀÂÃ]','gi'), 'a');
-    text = text.replace(new RegExp('[ÉÈÊ]','gi'), 'e');
-    text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i');
-    text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o');
-    text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u');
-    text = text.replace(new RegExp('[Ç]','gi'), 'c');
-    text = text.replace(new RegExp('[ ]','gi'), '-');
-    text = text.replace(new RegExp('[,]','gi'), '');
-    return text;
-}

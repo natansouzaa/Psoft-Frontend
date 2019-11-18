@@ -9,6 +9,7 @@
     </head>
         
     <body>
+    <!-- refenrencia para fazer formularios: http://opensource.locaweb.com.br/locawebstyle-v2/manual/formularios/campos/ -->
         <header>
             <h1>AJUDE</h1> 
             <h3>AquiJUntosDoandoEsperança</h3>   
@@ -18,8 +19,8 @@
                 <li class="links_navegacao"><a href="">Inicio</a></li>
                 <li class="links_navegacao"><a href="#/usuarios/cadastro">Cadastrar Usuario</a></li>
                 <li class="links_navegacao"><a href="#/login">Login</a></li>
-                <li class="links_navegacao"><a href="#/campanha/cadastro">Cadastrar Campanha</a></li>
-                <li class="links_navegacao"><a href="">Pesquisar Campanha</a></li>
+                <li class="links_navegacao"><a href="#/campanha">Cadastrar Campanha</a></li>
+                <li class="links_navegacao"><a href="#/campanha/pesquisa">Pesquisar Campanha</a></li>
             </ul>
         </nav>
 
@@ -74,16 +75,36 @@
     
 
         <template id ="cadastro_campanha">
-            <div class = "formulario">
+            <div class = "formulario" id='formulario_campanha'>
                 <form>
-                    <input type="text" name="nome_curto" placeholder="Nome">
-                    <input type="" name="descricao" placeholder="Descrição">
-                    <input type="" name="meta" placeholder="Meta(R$)">
-                    <input type="" name="data_limite" placeholder="Data Limite de Arrecadação">
+                    <div style="height: 60px;">
+                    
+                            <input type="text" name="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;">
+                            <div style= "margin-left: 620px;padding: 20px;"> Status: Ativa </div>
+                    </div>
+                    <div>
+                        <input type="number" name="meta" placeholder="Meta(R$)">
+                        Data limite:<input type="date" name="data_limite">
+                    </div>
+                    <textarea name="descricao" cols="30" rows="10" id='descricao_campanha'>Descrição da campanha</textarea>
+                    <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por: Nome do usuário</span>
+                    <div class="botoes">
+                            <button>Salvar Campanha</button><br>
+                    </div>
                 </form>
-                <div class="botoes">
-                    <button>Cadastrar Campanha</button><br>
+                <div style="margin:10px;">
+                    <div>
+                            <div id='num_likes'>Nº de likes: 0</div>
+                            <div id='num_comentarios'>Nº de comentários: 0</div>
+                        <button>Curtir</button>
+                        <button>Comentar</button>
+                    </div>
+                    
+                    
                 </div>
+                <div id='comentarios'>
+                        Os comentários aparecerão aqui
+                     </div>
             </div>
         </template>
     
@@ -94,7 +115,16 @@
             </div>
         </template>
         
+        <!-- falta terminar esse template -->
+        <template id='pesquisa_da_campanha'>
+            <form>
+                <input type="text" name="pesquisa" placeholder='Digite a sua pesquisa'>
+                <button id='pesquisar_campanha'>Pesquisar</button>
+            </form>
+            <div id='resultado_pesquisa'></div>
+        </template>
         
+        <div id="clear"></div>
         <footer>
                 <h1>rodape</h1>
         </footer>

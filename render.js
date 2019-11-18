@@ -56,10 +56,13 @@ export function login(){
              em algum canto da tela e armazenar o token jwt paras 
              as futuras requisicoes */
                 
-                if(resposta.status == "200")
-                    console.log(resposta)
+				 if(resposta.status == "200")
+				 	alert('Login realizado com sucesso!');
+                    
+					console.log(resposta)
+				})
 
-                })
+					
             
 			
 			
@@ -127,20 +130,20 @@ export function cadastro_usuario_realizado(){
 export function cadastro_campanha(){
     
     //atualiza o link
-    location.hash = "#/campanha/cadastro"
+    location.hash = "#/campanha"
 
     //Recupera o template do login e insere ele na div reservada pro formulário
     let $template = document.querySelector("#cadastro_campanha");
-    console.log($template)
     $viewer.innerHTML = $template.innerHTML;
 
     //Configura o botao p/ mandar os dados para o cadastro da campanha
     let $cadastrar = document.querySelectorAll("button")[0];
     $cadastrar.addEventListener('click',
 
+	//falta atualizar pro novo formulario
     function envia_cadastro_campanha(){
        console.log('enviando o cadastro da campanha');
-       let $formulario = document.querySelectorAll("form");
+       let $formulario = document.querySelector("form");
        let nome_curto = $formulario.nome_curto.value;
        let descricao = $formulario.descricao.value;
        let data_limite = $formulario.data_limite.value;
@@ -169,7 +172,64 @@ export function cadastro_campanha(){
    );
 }
 
+/* Funcao que, teoricamente, transforma uma string 
+com o nome-curto da campanha p/ o formato de link */
+function criaURL (text){
+    text = text.toLowerCase();
+    text = text.replace(new RegExp('[ÁÀÂÃ]','gi'), 'a');
+    text = text.replace(new RegExp('[ÉÈÊ]','gi'), 'e');
+    text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i');
+    text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o');
+    text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u');
+    text = text.replace(new RegExp('[Ç]','gi'), 'c');
+    text = text.replace(new RegExp('[ ]','gi'), '-');
+    text = text.replace(new RegExp('[,]','gi'), '');
+    return text;
+}
+
 export function cadastro_campanha_realizado(){
    let $template = document.querySelector("#cadastro_campanha_realizado");
    $viewer.innerHTML = $template.innerHTML;
+}
+
+
+//falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
+export function pesquisa_campanha(){
+	location.hash = "#/campanha/pesquisa";
+
+
+	let template = document.querySelector('#pesquisa_da_campanha');
+	$viewer.innerHTML = template.innerHTML;
+	
+	let botao = document.querySelector('#pesquisar_campanha');
+	botao.addEventListener('click',
+	
+		function enviar_pesquisa(){
+			console.log('enviando cadastro');
+			let $formulario = document.querySelector("form");
+			let pesquisa = $formulario.pesquisa.value;
+
+			fetch(URI + '/campanha/pesquisa',
+				{
+					"method":"POST",
+					"body":`{"primeiroNome":"${primeiro_nome}",
+							 "ultimoNome":"${ultimo_nome}",
+							 "email":"${email}",
+							 "cartaoDeCredito":"${cartao}",
+							 "senha": "${senha}"}`,
+					"headers":{"Content-Type":"application/json"}
+				})
+			.then(resposta => {
+				
+
+				console.log(resposta)
+			});
+
+
+
+		}
+	
+	
+	);
+
 }
