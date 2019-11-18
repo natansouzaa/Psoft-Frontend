@@ -43,24 +43,43 @@ export function login(){
 			let email = $formulario.email.value;
 			let senha = $formulario.senha.value;
 
-			fetch(URI + '/auth/login', 
+
+			(async ()=>{
+				let resposta = await fetch(URI + '/auth/login', 
 				{
 					"method": "POST",
 					"body": `{"email":"${email}",
 							  "senha":"${senha}"}`,
 					"headers":{"Content-Type":"application/json"}
-				}
-			)
-			.then(resposta =>{ //ver qual é o status no backend
-                /* Mudar para: if codigo = ok, aparecer o usuario logado
-             em algum canto da tela e armazenar o token jwt paras 
-             as futuras requisicoes */
-                
-				 if(resposta.status == "200")
-				 	alert('Login realizado com sucesso!');
-                    
-					console.log(resposta)
 				})
+					console.log("resposta:");
+					console.log(resposta);
+					
+					if(resposta.status == 200){
+						alert('Login realizado com sucesso!');
+						let dados_resposta = await resposta.json();
+						console.log(dados_resposta);
+					}
+		   })();
+
+			// fetch(URI + '/auth/login', 
+			// 	{
+			// 		"method": "POST",
+			// 		"body": `{"email":"${email}",
+			// 				  "senha":"${senha}"}`,
+			// 		"headers":{"Content-Type":"application/json"}
+			// 	}
+			// )
+			// .then(resposta =>{ //ver qual é o status no backend
+            //     /* Mudar para: if codigo = ok, aparecer o usuario logado
+            //  em algum canto da tela e armazenar o token jwt paras 
+            //  as futuras requisicoes */
+                
+			// 	 if(resposta.status == "200")
+			// 	 	alert('Login realizado com sucesso!');
+                    
+			// 		console.log(resposta.body)
+			// 	})
 
 					
             
@@ -150,21 +169,38 @@ export function cadastro_campanha(){
        let meta = $formulario.meta.value;
        let identificadorURL = criaURL(nome_curto);
 
-       fetch(URI + '/campanhas',
-               {
-                   "method":"POST",
-                   "body":`{"nomeCurto":"${nome_curto}",
-                            "Meta":"${meta}",
-                            "Descricao":"${descricao}",
-                            "identificadorURL":"${identificadorURL},
-                            "DataLimite":"${data_limite}"`,
-                   "headers":{"Content-Type":"application/json"}
-               })
-           .then(resposta => {
-               if(resposta.status == "201"){cadastro_campanha_realizado()}
+	   (async ()=>{
+			let resposta = await fetch(URI + '/campanhas',
+			{
+				"method":"POST",
+				"body":`{"nomeCurto":"${nome_curto}",
+						 "Meta":"${meta}",
+						 "Descricao":"${descricao}",
+						 "identificadorURL":"${identificadorURL},
+						 "DataLimite":"${data_limite}"`,
+				"headers":{"Content-Type":"application/json"}
+			})
+			if(resposta.code == "201"){
+				let dados_resposta = await resposta.json();
+				console.log(dados_resposta)
+			}
+	   })();
+	   
+    //    fetch(URI + '/campanhas',
+    //            {
+    //                "method":"POST",
+    //                "body":`{"nomeCurto":"${nome_curto}",
+    //                         "Meta":"${meta}",
+    //                         "Descricao":"${descricao}",
+    //                         "identificadorURL":"${identificadorURL},
+    //                         "DataLimite":"${data_limite}"`,
+    //                "headers":{"Content-Type":"application/json"}
+    //            })
+    //        .then(resposta => {
+    //            if(resposta.status == "201"){cadastro_campanha_realizado()}
 
-               else{console.log(resposta)}
-           });
+    //            else{console.log(resposta)}
+    //        });
 
        }
 
