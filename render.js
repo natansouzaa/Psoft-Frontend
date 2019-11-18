@@ -7,7 +7,7 @@ let URI = "http://localhost:8080";
 function salvarToken(token){
 	window.sessionStorage.setItem('token', token);
 }
-function recuperarToken(){
+function getToken(){
 	return window.sessionStorage.getItem('token');
 }
 
@@ -58,32 +58,15 @@ export function login(){
 					if(resposta.status == 200){
 						alert('Login realizado com sucesso!');
 						let dados_resposta = await resposta.json();
-						console.log(dados_resposta);
+						//console.log(dados_resposta);
+						//salva dados da sessão (token e email)
+						salvarToken(dados_resposta.token);
+						window.sessionStorage.setItem('email',email);
+						//console.log(sessionStorage);
+						location.hash=""
 					}
 		   })();
-
-			// fetch(URI + '/auth/login', 
-			// 	{
-			// 		"method": "POST",
-			// 		"body": `{"email":"${email}",
-			// 				  "senha":"${senha}"}`,
-			// 		"headers":{"Content-Type":"application/json"}
-			// 	}
-			// )
-			// .then(resposta =>{ //ver qual é o status no backend
-            //     /* Mudar para: if codigo = ok, aparecer o usuario logado
-            //  em algum canto da tela e armazenar o token jwt paras 
-            //  as futuras requisicoes */
-                
-			// 	 if(resposta.status == "200")
-			// 	 	alert('Login realizado com sucesso!');
-                    
-			// 		console.log(resposta.body)
-			// 	})
-
-					
-            
-			
+				
 			
 		}
 	)	
@@ -126,7 +109,7 @@ export function cadastro_usuarios(){
 					"headers":{"Content-Type":"application/json"}
 				})
 			.then(resposta => {
-				if(resposta.status == "201"){cadastro_usuario_realizado()}
+				if(resposta.status == 201){cadastro_usuario_realizado()}
 
 				else{console.log(resposta)}
 			});
@@ -156,10 +139,9 @@ export function cadastro_campanha(){
     $viewer.innerHTML = $template.innerHTML;
 
     //Configura o botao p/ mandar os dados para o cadastro da campanha
-    let $cadastrar = document.querySelectorAll("button")[0];
-    $cadastrar.addEventListener('click',
+	let $salvar = document.querySelector('#salvar_campanha');
+    $salvar.addEventListener('click',
 
-	//falta atualizar pro novo formulario
     function envia_cadastro_campanha(){
        console.log('enviando o cadastro da campanha');
        let $formulario = document.querySelector("form");
@@ -167,7 +149,11 @@ export function cadastro_campanha(){
        let descricao = $formulario.descricao.value;
        let data_limite = $formulario.data_limite.value;
        let meta = $formulario.meta.value;
-       let identificadorURL = criaURL(nome_curto);
+	   let identificadorURL = criaURL(nome_curto);
+	   console.log('identificadorURL:');
+
+	   console.log(identificadorURL);
+	   
 
 	   (async ()=>{
 			let resposta = await fetch(URI + '/campanhas',
@@ -176,31 +162,17 @@ export function cadastro_campanha(){
 				"body":`{"nomeCurto":"${nome_curto}",
 						 "Meta":"${meta}",
 						 "Descricao":"${descricao}",
-						 "identificadorURL":"${identificadorURL},
-						 "DataLimite":"${data_limite}"`,
-				"headers":{"Content-Type":"application/json"}
+						 "identificadorURL":"${identificadorURL}",
+						 "DataLimite":"${data_limite}"}`,
+				"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
 			})
-			if(resposta.code == "201"){
+			if(resposta.status == 201){
 				let dados_resposta = await resposta.json();
-				console.log(dados_resposta)
+				console.log(dados_resposta);
+			}else{
+				console.log(resposta);
 			}
 	   })();
-	   
-    //    fetch(URI + '/campanhas',
-    //            {
-    //                "method":"POST",
-    //                "body":`{"nomeCurto":"${nome_curto}",
-    //                         "Meta":"${meta}",
-    //                         "Descricao":"${descricao}",
-    //                         "identificadorURL":"${identificadorURL},
-    //                         "DataLimite":"${data_limite}"`,
-    //                "headers":{"Content-Type":"application/json"}
-    //            })
-    //        .then(resposta => {
-    //            if(resposta.status == "201"){cadastro_campanha_realizado()}
-
-    //            else{console.log(resposta)}
-    //        });
 
        }
 

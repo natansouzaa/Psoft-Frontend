@@ -34,9 +34,7 @@ function carregaPagina(){
 */
 carregaPagina(); 
 
-//funcao que fica esperando alguem digitar alguma coisa no link da pagina
-async function carregaLink(){
-	await window.addEventListener("hashchange", carregaPagina)
-}
-carregaLink();
+window.addEventListener("hashchange", carregaPagina);
+
+
 
