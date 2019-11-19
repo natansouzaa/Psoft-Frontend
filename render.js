@@ -138,7 +138,6 @@ export function cadastro_usuario_realizado(){
 	$login.addEventListener('click', login);
 }
 
-
 export function cadastro_campanha(){
     
     //atualiza o link
@@ -162,9 +161,6 @@ export function cadastro_campanha(){
        let meta = $formulario.meta.value;
 	   let identificadorURL = criaURL(nome_curto);
 
-
-	   console.log( data_limite);
-
 	   //voltar com
 	   (async () =>{
 		   let resposta = await fetch(URI + '/campanhas',
@@ -183,25 +179,23 @@ export function cadastro_campanha(){
 				let dados_resposta = await resposta.json();
 				console.log(dados_resposta);
 				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
+				console.log(sessionStorage);
+				view_campanha(identificadorURL);
 				/* colocar acesso direto pra campanha */
-		   } else if (resposta.status == 400)
+		    } else if (resposta.status == 400){
 				alert('Já existe campanha com esse nome');
-		   else if(resposta.status == 401)
-				alert('É necessário fazer login para usar esta função')
-			else if(resposta.status == 500)
-		   		console.log(resposta);
-
-		   
-	   
-
+			} else if(resposta.status == 401){
+				alert('É necessário fazer login para usar esta função');
+			} else if(resposta.status == 500){
+				console.log(resposta);
+			}
+				   
 	   })();
 	   
-	   
-
        }
 
-
    );
+
 }
 
 /* Funcao que transforma uma string 
@@ -218,12 +212,6 @@ function criaURL (text){
     text = text.replace(new RegExp('[,]','gi'), '');
     return text;
 }
-
-export function cadastro_campanha_realizado(){
-   let $template = document.querySelector("#cadastro_campanha_realizado");
-   $viewer.innerHTML = $template.innerHTML;
-}
-
 
 //falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
 export function pesquisa_campanha(){
@@ -303,10 +291,7 @@ export function pesquisa_campanha(){
 			
 		}
 	
-	
 	);
-
-
 
 }
 
@@ -331,7 +316,6 @@ export function view_campanha(url_campanha){
 			formulario.descricao.value = campanha.descricao;
 			formulario.nome_usuario.value = campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
 			
-
 			let editar_campanha = document.querySelector('#editar_campanha');
 			editar_campanha.addEventListener('click', 
 				function habilitar_formulario(){
@@ -342,12 +326,9 @@ export function view_campanha(url_campanha){
 
 					});
 
-
 				editar_campanha.innerText = "Salvar alterações";
 				//fazer a funcao salvar alteracoes com metodo put
 				editar_campanha.addEventListener('click', function salvar_alteracoes(){});
-
-
 
 			});
 
@@ -360,23 +341,12 @@ export function view_campanha(url_campanha){
 			//trocar por um forEach que cria elementos e insere os comentários dentro da area
 			area_comentarios.innerText = campanha.comentarios;
 
-
-
-
 		}else{
 			//trocar por uma view
 			alert("Campanha nao encontrada");
 			console.log(resposta);
 		}
 
-
-
 	})();
-
-
-
-
-
-
+	
 }
-
