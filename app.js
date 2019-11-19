@@ -19,7 +19,7 @@ function carregaPagina(){
 		case '/campanha':
 			render.cadastro_campanha();
 			break;
-		case '/campanha/pesquisa':
+		case '/campanha/pesquisa/':
 			render.pesquisa_campanha();
 			break;
 		default: 

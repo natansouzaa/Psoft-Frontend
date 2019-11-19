@@ -57,6 +57,10 @@ body{
     /*para preservar meus olhos*/
     background-color: #4682B4;
 }
+
+table{
+    border: 2px solid #111; 
+}
 /* Classes */
 .formulario{
     margin: auto;

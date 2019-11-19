@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>AJuDE - Login</title>
-        <script type="module" src="app.js"></script>
+        <script type="module" src="app.js" crossorigin="use-credentials"></script>
         <link rel="stylesheet" href="estilo.css">
         <link rel="import" href="templates.html">      
     </head>
@@ -20,7 +20,7 @@
                 <li class="links_navegacao"><a href="#/usuarios/cadastro">Cadastrar Usuario</a></li>
                 <li class="links_navegacao"><a href="#/login">Login</a></li>
                 <li class="links_navegacao"><a href="#/campanha">Cadastrar Campanha</a></li>
-                <li class="links_navegacao"><a href="#/campanha/pesquisa">Pesquisar Campanha</a></li>
+                <li class="links_navegacao"><a href="#/campanha/pesquisa/">Pesquisar Campanha</a></li>
             </ul>
         </nav>
 
@@ -120,8 +120,28 @@
             <form>
                 <input type="text" name="pesquisa" placeholder='Digite a sua pesquisa'>
                 <button id='pesquisar_campanha'>Pesquisar</button>
+                <div> 
+                    Incluir campanhas não-ativas:<input type='checkbox' name="filtro_pesquisa" id='filtro_pesquisa' value="">
+                </div>
             </form>
-            <div id='resultado_pesquisa'></div>
+            
+        </template>
+
+
+        <template id='resultado_pesquisa'>
+                <div>
+                    Resultado:
+                    
+                    <table>
+                        <tr>
+                            <td>Nome da Campanha</td>
+                            <td>Data limite</td>
+                            <td>Status</td>
+                            <td>Doação/Meta (em R$)</td>
+                        </tr>
+        
+                    </table>
+                </div>
         </template>
         
         <div id="clear"></div>

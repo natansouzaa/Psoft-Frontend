@@ -11,6 +11,12 @@ function getToken(){
 	return window.sessionStorage.getItem('token');
 }
 
+function getEmail(){
+	return window.sessionStorage.getItem('email');
+}
+function salvarEmail(email){
+	window.sessionStorage.setItem('email', email);
+}
 
 // Homepage vai ser implementada no caso 9
 export function homepage(){
@@ -61,8 +67,11 @@ export function login(){
 						console.log(dados_resposta);
 						//salva dados da sessão (token e email)
 						salvarToken(dados_resposta.token);
-						window.sessionStorage.setItem('email',email);
+						salvarEmail(email);
 						console.log(sessionStorage);
+						homepage();
+					}else if(resposta.status == 400){
+						alert('Email e/ou senha incorreto(s)!')
 					}
 		   })();
 				
@@ -110,7 +119,9 @@ export function cadastro_usuarios(){
 			.then(resposta => {
 				if(resposta.status == 201){cadastro_usuario_realizado()}
 
-				else{console.log(resposta)}
+				else if(resposta.status == 400){
+					alert('Email ja cadastrado!')
+				}
 			});
 
 		}
@@ -145,33 +156,47 @@ export function cadastro_campanha(){
        console.log('enviando o cadastro da campanha');
        let $formulario = document.querySelector("form");
        let nome_curto = $formulario.nome_curto.value;
-       let descricao = $formulario.descricao.value;
+	   let descricao = $formulario.descricao.value;
+	   //ano-mes-dia
        let data_limite = $formulario.data_limite.value;
        let meta = $formulario.meta.value;
 	   let identificadorURL = criaURL(nome_curto);
-	   console.log('identificadorURL:');
 
-	   console.log(identificadorURL);
-	   
 
-	   (async ()=>{
-			let resposta = await fetch(URI + '/campanhas',
-			{
-				"method":"POST",
-				"body":`{"nomeCurto":"${nome_curto}",
-						 "Meta":"${meta}",
-						 "Descricao":"${descricao}",
-						 "identificadorURL":"${identificadorURL}",
-						 "DataLimite":"${data_limite}"}`,
-				"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
-			})
-			if(resposta.status == 201){
+	   console.log( data_limite);
+
+	   //voltar com
+	   (async () =>{
+		   let resposta = await fetch(URI + '/campanhas',
+				{
+					"method":"POST",
+					"body":`{"nomeCurto":"${nome_curto}",
+								"Meta":"${meta}",
+								"Descricao":"${descricao}",
+								"identificadorURL":"${identificadorURL}",
+								"emailDono":"${getEmail()}",
+								"DataLimite":"${data_limite}"}`,
+					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
+				});
+
+		    if(resposta.status==201){
 				let dados_resposta = await resposta.json();
 				console.log(dados_resposta);
-			}else{
-				console.log(resposta);
-			}
+				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
+				/* colocar acesso direto pra campanha */
+		   } else if (resposta.status == 400)
+				alert('Já existe campanha com esse nome');
+		   else if(resposta.status == 401)
+				alert('É necessário fazer login para usar esta função')
+			else if(resposta.status == 500)
+		   		console.log(resposta);
+
+		   
+	   
+
 	   })();
+	   
+	   
 
        }
 
@@ -179,7 +204,7 @@ export function cadastro_campanha(){
    );
 }
 
-/* Funcao que, teoricamente, transforma uma string 
+/* Funcao que transforma uma string 
 com o nome-curto da campanha p/ o formato de link */
 function criaURL (text){
     text = text.toLowerCase();
@@ -202,7 +227,7 @@ export function cadastro_campanha_realizado(){
 
 //falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
 export function pesquisa_campanha(){
-	location.hash = "#/campanha/pesquisa";
+	location.hash = "#/campanha/pesquisa/";
 
 
 	let template = document.querySelector('#pesquisa_da_campanha');
@@ -215,25 +240,66 @@ export function pesquisa_campanha(){
 			console.log('enviando cadastro');
 			let $formulario = document.querySelector("form");
 			let pesquisa = $formulario.pesquisa.value;
+			let checkbox = document.querySelector("#filtro_pesquisa");
+			let filtro;
 
-			fetch(URI + '/campanha/pesquisa',
+			if(checkbox.checked)
+				filtro = "?todos=true";
+			else
+				filtro = "?todos=false";
+			
+			console.log(URI + '/pesquisa/' + pesquisa + filtro);
+			(async ()=>{
+				let resposta = await fetch(URI + '/pesquisa/' + pesquisa + filtro,
 				{
-					"method":"POST",
-					"body":`{"primeiroNome":"${primeiro_nome}",
-							 "ultimoNome":"${ultimo_nome}",
-							 "email":"${email}",
-							 "cartaoDeCredito":"${cartao}",
-							 "senha": "${senha}"}`,
-					"headers":{"Content-Type":"application/json"}
-				})
-			.then(resposta => {
+					"method":"GET",
+					'mode':'cors',
+					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`
+					}
+				});
+				if(resposta.status == 202){
+				console.log(resposta);
+				let dados = await resposta.json();
+				console.log(dados);
+
+				let resultado_pesquisa = document.querySelector('#resultado_pesquisa');
+				$viewer.innerHTML += resultado_pesquisa.innerHTML;
 				
+				let tabela = document.querySelector('table');
+				dados.forEach(campanha => {
+					let linha = document.createElement('tr');
 
-				console.log(resposta)
-			});
+					let nome_campanha = document.createElement('td');
+					nome_campanha.innerText = campanha.nomeCurto;
 
+					let data_limite = document.createElement('td');
+					data_limite.innerText = campanha.dataLimite;
 
+					let status = document.createElement('td');
+					status.innerText = campanha.status;
 
+					let meta = document.createElement('td');
+					meta.innerText = campanha.doacoes + '/' + campanha.meta;
+
+					let visualizar = document.createElement('td');
+					let botao = document.createElement('button');
+					botao.innerText = 'Visualizar campanha';
+					visualizar.appendChild(botao);
+
+					linha.appendChild(nome_campanha);
+					linha.appendChild(data_limite);
+					linha.appendChild(status);
+					linha.appendChild(meta);
+					linha.appendChild(visualizar);
+					
+					tabela.appendChild(linha);
+				});
+			}else
+
+				console.log(resposta);
+
+			})();
+			
 		}
 	
 	
