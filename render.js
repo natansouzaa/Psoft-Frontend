@@ -280,7 +280,8 @@ export function pesquisa_campanha(){
 
 					let meta = document.createElement('td');
 					meta.innerText = campanha.doacoes + '/' + campanha.meta;
-
+					
+					//quando o caso 4 estiver pronto, colocar o link do botao
 					let visualizar = document.createElement('td');
 					let botao = document.createElement('button');
 					botao.innerText = 'Visualizar campanha';
@@ -305,4 +306,77 @@ export function pesquisa_campanha(){
 	
 	);
 
+
+
 }
+
+export function view_campanha(url_campanha){
+	
+	(async() =>{
+		let resposta = await fetch(URI + url_campanha);
+		
+		if(resposta.status == 202){
+			let campanha = await resposta.json();
+			console.log(campanha);
+			
+			let template = document.querySelector('#view_campanha');
+			$viewer.innerHTML = template.innerHTML;
+
+			let formulario = document.querySelector('form');
+			formulario.nome_curto.value = campanha.nomeCurto;
+			formulario.status.value = campanha.status;
+			
+			formulario.meta.value = campanha.meta;
+			formulario.data_limite.value = campanha.dataLimite;
+			formulario.descricao.value = campanha.descricao;
+			formulario.nome_usuario.value = campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
+			
+
+			let editar_campanha = document.querySelector('#editar_campanha');
+			editar_campanha.addEventListener('click', 
+				function habilitar_formulario(){
+					let inputs = document.querySelectorAll('form input');
+					console.log(inputs)
+					inputs.forEach(elemento =>{
+						elemento.removeAttribute('readonly');
+
+					});
+
+
+				editar_campanha.innerText = "Salvar alterações";
+				//fazer a funcao salvar alteracoes com metodo put
+				editar_campanha.addEventListener('click', function salvar_alteracoes(){});
+
+
+
+			});
+
+			let num_likes = document.querySelector('#num_likes');
+			num_likes.innerText += campanha.curtidas;
+
+			let area_comentarios = document.querySelector('#area_comentarios');
+
+
+			//trocar por um forEach que cria elementos e insere os comentários dentro da area
+			area_comentarios.innerText = campanha.comentarios;
+
+
+
+
+		}else{
+			//trocar por uma view
+			alert("Campanha nao encontrada");
+			console.log(resposta);
+		}
+
+
+
+	})();
+
+
+
+
+
+
+}
+

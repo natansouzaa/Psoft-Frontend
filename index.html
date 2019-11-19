@@ -143,7 +143,55 @@
                     </table>
                 </div>
         </template>
-        
+
+
+
+
+        <template id='view_campanha'>
+
+            <div class = "formulario" id='formulario_campanha'>
+                <form >
+                    
+                    <div style="height: 60px;">
+                    
+                            <input type="text" name="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;" readonly='true'>
+                            status:<input type='text' name='status' id='status_campanha' style= "margin-left: 60;" value='Ativa' readonly='true'> 
+                            
+                    </div>
+                    <div>
+                        <input type="number" step="0.01" name="meta" placeholder="Meta(R$)" readonly='true'>
+                        Data limite:<input type="date" name="data_limite" readonly='true'>
+                    </div>
+                    <textarea name="descricao" cols="30" rows="10" id='descricao_campanha' readonly='true'>Descrição da campanha</textarea>
+                    <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por:<input type='text' name='nome_usuario' value ='Nome do usuário' readonly='true'> </span>
+                   
+                    <div class="botoes">
+                            <button id='editar_campanha'>Editar Campanha</button><br>
+                    </div>
+                </form>
+                <div style="margin:10px;">
+                    <div>
+                             <div id='num_likes'>Nº de likes:&nbsp</div>  <!-- &nbsp quer dizer pra deixar um espaço-->
+                            <div id='num_comentarios'>Nº de comentários: 0</div>
+                        <button>Curtir</button>
+                        <button>Comentar</button>
+                    </div>
+                    
+                    
+                </div>
+                <div id='area_comentarios'>
+                        Os comentários aparecerão aqui
+                </div>
+            </div>
+
+
+        </template>
+
+
+
+
+
+
         <div id="clear"></div>
         <footer>
                 <h1>rodape</h1>

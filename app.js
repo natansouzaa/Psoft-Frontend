@@ -8,7 +8,7 @@ import * as render from "/render.js";
 function carregaPagina(){
 	let hash = location.hash;
 	let endereco = hash.substring(1,hash.length);
-	
+	console.log('endereco : ' + endereco);
 	switch(endereco){
 		case '/usuarios/cadastro': 
 			render.cadastro_usuarios();
@@ -22,8 +22,11 @@ function carregaPagina(){
 		case '/campanha/pesquisa/':
 			render.pesquisa_campanha();
 			break;
-		default: 
+		case '':
 			render.homepage();
+			break;
+		default: 
+			render.view_campanha(endereco);
 			break;
 	}
 		
