@@ -36,7 +36,6 @@ function carregaPagina(){
 	pagina de login
 */
 carregaPagina(); 
-
 window.addEventListener("hashchange", carregaPagina);
 
 
