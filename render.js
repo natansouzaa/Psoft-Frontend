@@ -182,7 +182,8 @@ export function cadastro_campanha(){
 				console.log(dados_resposta);
 				console.log(sessionStorage);
 				//isto era pra funcionar Mauricio
-				view_campanha(identificadorURL);
+				console.log("/#/campanhas/" + identificadorURL);
+				view_campanha("/#/campanhas/" + identificadorURL);
 		   }else if (resposta.status == 400){
 				alert('Já existe campanha com esse nome');
 		   }else if(resposta.status == 401){
@@ -266,13 +267,17 @@ export function pesquisa_campanha(){
 
 					let meta = document.createElement('td');
 					meta.innerText = campanha.doacoes + '/' + campanha.meta;
-					
+					let url = campanha.identificadorURL;
+
 					//quando o caso 4 estiver pronto, colocar o link do botao
 					let visualizar = document.createElement('td');
 					let botao = document.createElement('button');
 					botao.innerText = 'Visualizar campanha';
-					/*tentando colocar o botao da pesquisa pra funcionar
-					botao.addEventListener('click', view_campanha(criaURL(nome_campanha)));*/
+					//tentando colocar o botao da pesquisa pra funcionar
+					botao.addEventListener('click', function viewProv(){
+						view_campanha("/#/campanhas/" + url);
+						location.hash = ("/#/campanhas/" + url);
+					});
 					visualizar.appendChild(botao);
 
 					linha.appendChild(nome_campanha);
@@ -296,9 +301,11 @@ export function pesquisa_campanha(){
 }
 
 export function view_campanha(url_campanha){
-	
+
 	(async() =>{
 		let resposta = await fetch(URI + url_campanha);
+
+		console.log(URI + url_campanha);
 		
 		if(resposta.status == 202){
 			let campanha = await resposta.json();
@@ -328,8 +335,7 @@ export function view_campanha(url_campanha){
 				editar_campanha.innerText = "Salvar alterações";
 				//fazer a funcao salvar alteracoes com metodo put
 				editar_campanha.addEventListener('click', function salvar_alteracoes(){});
-
-			});
+				});
 
 			let num_likes = document.querySelector('#num_likes');
 			num_likes.innerText += campanha.curtidas;
