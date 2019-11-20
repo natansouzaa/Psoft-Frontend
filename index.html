@@ -9,7 +9,7 @@
     </head>
         
     <body>
-    <!-- refenrencia para fazer formularios: http://opensource.locaweb.com.br/locawebstyle-v2/manual/formularios/campos/ -->
+    <!-- referencia para fazer formularios: http://opensource.locaweb.com.br/locawebstyle-v2/manual/formularios/campos/ -->
         <header>
             <h1>AJUDE</h1> 
             <h3>AquiJUntosDoandoEsperança</h3>   
@@ -33,11 +33,11 @@
 
 
         <template id ="login">
-            <div class = "formulario">
-                <form> 
-                    <input type="text" name="email" placeholder="E-mail">
-                    <input type="password" name="senha" placeholder="Senha">
-                </form>
+            <div id ='formulario_login' class = "formulario">
+                <div> 
+                    <input id = 'email_usuario'type="text" name="email" placeholder="E-mail">
+                    <input id='senha' type="password" name="senha" placeholder="Senha">
+                </div>
                 <div class="botoes">
                     <button>Logar</button><br>
                     <button>Ir para Cadastro</button>
@@ -46,15 +46,15 @@
         </template>
         
     
-        <template id ="cadastro">
-            <div class = "formulario">
-                <form> 
-                <input type="text" name="primeiro_nome" placeholder="Primeiro nome">
-                <input type="text" name="ultimo_nome" placeholder="Último nome">
-                <input type="text" name="email" placeholder="E-mail">
-                <input type="text" name="cartao" placeholder="Nºcartão">
-                <input type="password" name="senha" placeholder="Senha">                
-                </form>
+        <template id ="cadastro_usuarios">
+            <div id ='formulario_cadastro_usuario'class = "formulario">
+                <div> 
+                <input type="text" id="primeiro_nome" placeholder="Primeiro nome">
+                <input type="text" id="ultimo_nome" placeholder="Último nome">
+                <input type="text" id="email" placeholder="E-mail">
+                <input type="text" id="cartao" placeholder="Nºcartão">
+                <input type="password" id="senha" placeholder="Senha">                
+                </div>
                 <div class="botoes">
                     <button>Cadastrar</button><br>
                     <button>Ir para Login</button>
@@ -75,23 +75,23 @@
     
 
         <template id ="cadastro_campanha">
-            <div class = "formulario" id='formulario_campanha'>
-                <form>
+            <div style="width: 900px;"class = "formulario" id='formulario_cadastro_campanha'>
+                <div >
                     <div style="height: 60px;">
                     
-                            <input type="text" name="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;">
+                            <input type="text" id="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;">
                             <div style= "margin-left: 620px;padding: 20px;"> Status: Ativa </div>
                     </div>
                     <div>
-                        <input type="number" name="meta" placeholder="Meta(R$)">
-                        Data limite:<input type="date" name="data_limite">
+                        <input style="float:left" type="number" id="meta" placeholder="Meta(R$)">
+                        Data limite:<input type="date" id="data_limite">
                     </div>
-                    <textarea name="descricao" cols="30" rows="10" id='descricao_campanha'>Descrição da campanha</textarea>
+                    <textarea id="descricao" cols="30" rows="10" id='descricao_campanha'>Descrição da campanha</textarea>
                     <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por: Nome do usuário</span>
                     <div class="botoes">
                             <button id='salvar_campanha'>Salvar Campanha</button><br>
                     </div>
-                </form>
+                </div>
                 <div style="margin:10px;">
                     <div>
                             <div id='num_likes'>Nº de likes: 0</div>
@@ -117,13 +117,13 @@
         
         <!-- falta terminar esse template -->
         <template id='pesquisa_da_campanha'>
-            <form>
-                <input type="text" name="pesquisa" placeholder='Digite a sua pesquisa'>
+            <div id='pesquisa'>
+                <input type="text" id="campo_pesquisa" placeholder='Digite a sua pesquisa'>
                 <button id='pesquisar_campanha'>Pesquisar</button>
                 <div> 
                     Incluir campanhas não-ativas:<input type='checkbox' name="filtro_pesquisa" id='filtro_pesquisa' value="">
                 </div>
-            </form>
+            </div>
             
         </template>
 
@@ -150,29 +150,29 @@
         <template id='view_campanha'>
 
             <div class = "formulario" id='formulario_campanha'>
-                <form >
+                <div>
                     
                     <div style="height: 60px;">
                     
-                            <input type="text" name="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;" readonly='true'>
-                            status:<input type='text' name='status' id='status_campanha' style= "margin-left: 60;" value='Ativa' readonly='true'> 
+                            <input type="text" id="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;" readonly='true'>
+                            status:<input type='text' id='status' id='status_campanha' style= "margin-left: 60;" value='Ativa' readonly='true'> 
                             
                     </div>
                     <div>
-                        <input type="number" step="0.01" name="meta" placeholder="Meta(R$)" readonly='true'>
-                        Data limite:<input type="date" name="data_limite" readonly='true'>
+                        <input type="number" step="0.01" id="meta" placeholder="Meta(R$)" readonly='true'>
+                        Data limite:<input type="date" id="data_limite" readonly='true'>
                     </div>
-                    <textarea name="descricao" cols="30" rows="10" id='descricao_campanha' readonly='true'>Descrição da campanha</textarea>
-                    <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por:<input type='text' name='nome_usuario' value ='Nome do usuário' readonly='true'> </span>
+                    <textarea id="descricao" cols="30" rows="10" id='descricao_campanha' readonly='true'>Descrição da campanha</textarea>
+                    <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por:<input type='text' id='nome_usuario' value ='Nome do usuário' readonly='true'> </span>
                    
                     <div class="botoes">
                             <button id='editar_campanha'>Editar Campanha</button><br>
                     </div>
-                </form>
+                </div>
                 <div style="margin:10px;">
                     <div>
-                             <div id='num_likes'>Nº de likes:&nbsp</div>  <!-- &nbsp quer dizer pra deixar um espaço-->
-                            <div id='num_comentarios'>Nº de comentários: 0</div>
+                        <div id='num_likes'>Nº de likes:&nbsp</div>  <!-- &nbsp quer dizer pra deixar um espaço-->
+                        <div id='num_comentarios'>Nº de comentários: 0</div>
                         <button>Curtir</button>
                         <button>Comentar</button>
                     </div>
