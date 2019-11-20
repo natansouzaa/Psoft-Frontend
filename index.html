@@ -2,7 +2,8 @@
 <html lang="pt-br">
     <head>
         <meta charset="utf-8">
-        <title>AJuDE - Login</title>
+        <title>AJuDE</title>
+        <link rel="icon" type="imagem/png" href="/icone.png"/>
         <script type="module" src="app.js" crossorigin="use-credentials"></script>
         <link rel="stylesheet" href="estilo.css">
         <link rel="import" href="templates.html">      
@@ -15,7 +16,7 @@
             <h3>AquiJUntosDoandoEsperança</h3>   
         </header>
         <nav>
-            <ul>
+            <ul>  <!-- a = leva a um link | href e o link que ele vai -->
                 <li class="links_navegacao"><a href="">Inicio</a></li>
                 <li class="links_navegacao"><a href="#/usuarios/cadastro">Cadastrar Usuario</a></li>
                 <li class="links_navegacao"><a href="#/login">Login</a></li>
@@ -72,11 +73,13 @@
                 </div>
             </div>
         </template>
-    
+
 
         <template id ="cadastro_campanha">
             <div class = "formulario" id='formulario_campanha'>
+
                 <form>
+
                     <div style="height: 60px;">
                     
                             <input type="text" name="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;">
@@ -91,7 +94,9 @@
                     <div class="botoes">
                             <button id='salvar_campanha'>Salvar Campanha</button><br>
                     </div>
+
                 </form>
+
                 <div style="margin:10px;">
                     <div>
                             <div id='num_likes'>Nº de likes: 0</div>
@@ -99,12 +104,18 @@
                         <button>Curtir</button>
                         <button>Comentar</button>
                     </div>
-                    
-                    
+                       
                 </div>
                 <div id='comentarios'>
                         Os comentários aparecerão aqui
                 </div>
+            </div>
+        </template>
+    
+
+        <template id="cadastro_campanha_realizado">
+            <div id="cadastro_campanha_realizado">
+                <p>Cadastro da campanha realizado com sucesso!</p>
             </div>
         </template>
         
@@ -138,8 +149,6 @@
         </template>
 
 
-
-
         <template id='view_campanha'>
 
             <div class = "formulario" id='formulario_campanha'>
@@ -151,44 +160,45 @@
                             status:<input type='text' name='status' id='status_campanha' style= "margin-left: 60;" value='Ativa' readonly='true'> 
                             
                     </div>
+
                     <div>
                         <input type="number" step="0.01" name="meta" placeholder="Meta(R$)" readonly='true'>
                         Data limite:<input type="date" name="data_limite" readonly='true'>
                     </div>
+
                     <textarea name="descricao" cols="30" rows="10" id='descricao_campanha' readonly='true'>Descrição da campanha</textarea>
                     <span style="margin: 10px;" id='usuario_campanha_cadastro'>Criado por:<input type='text' name='nome_usuario' value ='Nome do usuário' readonly='true'> </span>
                    
                     <div class="botoes">
                             <button id='editar_campanha'>Editar Campanha</button><br>
                     </div>
+
                 </form>
+
                 <div style="margin:10px;">
                     <div>
                              <div id='num_likes'>Nº de likes:&nbsp</div>  <!-- &nbsp quer dizer pra deixar um espaço-->
                             <div id='num_comentarios'>Nº de comentários: 0</div>
                         <button>Curtir</button>
                         <button>Comentar</button>
-                    </div>
-                    
-                    
+                    </div>                   
                 </div>
+
                 <div id='area_comentarios'>
                         Os comentários aparecerão aqui
                 </div>
-            </div>
 
+            </div>
 
         </template>
 
 
-
-
-
-
         <div id="clear"></div>
+        
         <footer>
                 <h1>rodape</h1>
         </footer>
         
     </body>
+
 </html>

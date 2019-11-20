@@ -22,8 +22,8 @@ function salvarEmail(email){
 export function homepage(){
     let $template = document.querySelector("#homepage");
 	$viewer.innerHTML = $template.innerHTML;
+	
 }
-
 
 
 export function login(){
@@ -74,8 +74,7 @@ export function login(){
 						alert('Email e/ou senha incorreto(s)!')
 					}
 		   })();
-				
-			
+					
 		}
 	)	
 }	
@@ -117,15 +116,15 @@ export function cadastro_usuarios(){
 					"headers":{"Content-Type":"application/json"}
 				})
 			.then(resposta => {
-				if(resposta.status == 201){cadastro_usuario_realizado()}
 
+				if(resposta.status == 201){cadastro_usuario_realizado()}
 				else if(resposta.status == 400){
 					alert('Email ja cadastrado!')
 				}
+
 			});
 
 		}
-
 
 	);
 }
@@ -161,6 +160,8 @@ export function cadastro_campanha(){
        let meta = $formulario.meta.value;
 	   let identificadorURL = criaURL(nome_curto);
 
+	   console.log( data_limite);
+
 	   //voltar com
 	   (async () =>{
 		   let resposta = await fetch(URI + '/campanhas',
@@ -176,26 +177,24 @@ export function cadastro_campanha(){
 				});
 
 		    if(resposta.status==201){
+				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "/#/campanha/"+identificadorURL);
 				let dados_resposta = await resposta.json();
 				console.log(dados_resposta);
-				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
 				console.log(sessionStorage);
+				//isto era pra funcionar Mauricio
 				view_campanha(identificadorURL);
-				/* colocar acesso direto pra campanha */
-		    } else if (resposta.status == 400){
+		   }else if (resposta.status == 400){
 				alert('Já existe campanha com esse nome');
-			} else if(resposta.status == 401){
-				alert('É necessário fazer login para usar esta função');
-			} else if(resposta.status == 500){
-				console.log(resposta);
-			}
-				   
+		   }else if(resposta.status == 401){
+				alert('É necessário fazer login para usar esta função')
+		   }else if(resposta.status == 500){
+		   		console.log(resposta);
+		   }
 	   })();
 	   
        }
 
    );
-
 }
 
 /* Funcao que transforma uma string 
@@ -216,7 +215,6 @@ function criaURL (text){
 //falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
 export function pesquisa_campanha(){
 	location.hash = "#/campanha/pesquisa/";
-
 
 	let template = document.querySelector('#pesquisa_da_campanha');
 	$viewer.innerHTML = template.innerHTML;
@@ -273,6 +271,8 @@ export function pesquisa_campanha(){
 					let visualizar = document.createElement('td');
 					let botao = document.createElement('button');
 					botao.innerText = 'Visualizar campanha';
+					/*tentando colocar o botao da pesquisa pra funcionar
+					botao.addEventListener('click', view_campanha(criaURL(nome_campanha)));*/
 					visualizar.appendChild(botao);
 
 					linha.appendChild(nome_campanha);
@@ -283,10 +283,10 @@ export function pesquisa_campanha(){
 					
 					tabela.appendChild(linha);
 				});
-			}else
 
+			}else {
 				console.log(resposta);
-
+			}
 			})();
 			
 		}
@@ -323,7 +323,6 @@ export function view_campanha(url_campanha){
 					console.log(inputs)
 					inputs.forEach(elemento =>{
 						elemento.removeAttribute('readonly');
-
 					});
 
 				editar_campanha.innerText = "Salvar alterações";
@@ -337,7 +336,6 @@ export function view_campanha(url_campanha){
 
 			let area_comentarios = document.querySelector('#area_comentarios');
 
-
 			//trocar por um forEach que cria elementos e insere os comentários dentro da area
 			area_comentarios.innerText = campanha.comentarios;
 
@@ -348,5 +346,5 @@ export function view_campanha(url_campanha){
 		}
 
 	})();
-	
+
 }
