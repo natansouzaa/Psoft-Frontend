@@ -3,6 +3,7 @@ import * as render from "/render.js";
 //para lidar com o token: pesquisar sobre
 //localStorage ou indexedDB
 
+
 //Funcao que escolhe a view a ser renderizada com base no link
 function carregaPagina(){
 	let hash = location.hash;
@@ -35,5 +36,7 @@ function carregaPagina(){
 	pagina de login
 */
 carregaPagina(); 
-
 window.addEventListener("hashchange", carregaPagina);
+
+
+

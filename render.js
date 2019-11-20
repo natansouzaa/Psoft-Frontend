@@ -22,8 +22,8 @@ function salvarEmail(email){
 export function homepage(){
     let $template = document.querySelector("#homepage");
 	$viewer.innerHTML = $template.innerHTML;
-	
 }
+
 
 
 export function login(){
@@ -45,12 +45,12 @@ export function login(){
 
 		function fazer_login(){
 			console.log('fazendo login');
-			let $formulario = document.querySelector("form");
-			let email = $formulario.email.value;
-			let senha = $formulario.senha.value;
+			let $formulario = document.querySelector("#formulario_login");
+			let email = document.querySelector('#email_usuario').value;
+			let senha = document.querySelector('#senha').value;
 
 
-			(async ()=>{
+			(async function fetch_login(){
 				let resposta = await fetch(URI + '/auth/login', 
 				{
 					"method": "POST",
@@ -74,7 +74,8 @@ export function login(){
 						alert('Email e/ou senha incorreto(s)!')
 					}
 		   })();
-					
+				
+			
 		}
 	)	
 }	
@@ -85,7 +86,7 @@ export function cadastro_usuarios(){
 	location.hash = "#/usuarios/cadastro";
 
 	//Recupera o template do login e insere ele na div reservada pro formulário
-    let $template = document.querySelector("#cadastro");
+    let $template = document.querySelector("#cadastro_usuarios");
 	$viewer.innerHTML = $template.innerHTML;
 
 	//Configura o botao p/ voltar pro formulario de login
@@ -98,12 +99,12 @@ export function cadastro_usuarios(){
 
 		function enviar_cadastro(){
 			console.log('enviando cadastro');
-			let $formulario = document.querySelector("form");
-			let primeiro_nome = $formulario.primeiro_nome.value;
-			let ultimo_nome = $formulario.ultimo_nome.value;
-			let email = $formulario.email.value;
-			let cartao = $formulario.cartao.value;
-			let senha = $formulario.senha.value;
+			let $formulario = document.querySelector("#formulario_cadastro_usuario");
+			let primeiro_nome = document.querySelector("#primeiro_nome").value;
+			let ultimo_nome = document.querySelector("#ultimo_nome").value;
+			let email = document.querySelector("#email").value;
+			let cartao = document.querySelector("#cartao").value;
+			let senha = document.querySelector("#senha").value;
 
 			fetch(URI + '/usuarios',
 				{
@@ -116,15 +117,15 @@ export function cadastro_usuarios(){
 					"headers":{"Content-Type":"application/json"}
 				})
 			.then(resposta => {
-
 				if(resposta.status == 201){cadastro_usuario_realizado()}
+
 				else if(resposta.status == 400){
 					alert('Email ja cadastrado!')
 				}
-
 			});
 
 		}
+
 
 	);
 }
@@ -136,6 +137,7 @@ export function cadastro_usuario_realizado(){
 	let $login = document.querySelector("button");
 	$login.addEventListener('click', login);
 }
+
 
 export function cadastro_campanha(){
     
@@ -152,18 +154,19 @@ export function cadastro_campanha(){
 
     function envia_cadastro_campanha(){
        console.log('enviando o cadastro da campanha');
-       let $formulario = document.querySelector("form");
-       let nome_curto = $formulario.nome_curto.value;
-	   let descricao = $formulario.descricao.value;
+       let $formulario = document.querySelector("formulario_cadastro_campanha");
+       let nome_curto = document.querySelector("#nome_curto").value;
+	   let descricao = document.querySelector("#descricao").value;
 	   //ano-mes-dia
-       let data_limite = $formulario.data_limite.value;
-       let meta = $formulario.meta.value;
+       let data_limite = document.querySelector("#data_limite").value;
+       let meta = document.querySelector("#meta").value;
 	   let identificadorURL = criaURL(nome_curto);
+
 
 	   console.log( data_limite);
 
 	   //voltar com
-	   (async () =>{
+	   (async function fetch_cadastro_campanha(){
 		   let resposta = await fetch(URI + '/campanhas',
 				{
 					"method":"POST",
@@ -177,23 +180,26 @@ export function cadastro_campanha(){
 				});
 
 		    if(resposta.status==201){
-				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "/#/campanha/"+identificadorURL);
 				let dados_resposta = await resposta.json();
 				console.log(dados_resposta);
-				console.log(sessionStorage);
-				//isto era pra funcionar Mauricio
-				console.log("/#/campanhas/" + identificadorURL);
-				view_campanha("/#/campanhas/" + identificadorURL);
-		   }else if (resposta.status == 400){
+				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
+				/* colocar acesso direto pra campanha */
+		   } else if (resposta.status == 400)
 				alert('Já existe campanha com esse nome');
-		   }else if(resposta.status == 401){
+		   else if(resposta.status == 401)
 				alert('É necessário fazer login para usar esta função')
-		   }else if(resposta.status == 500){
+			else if(resposta.status == 500)
 		   		console.log(resposta);
-		   }
+
+		   
+	   
+
 	   })();
 	   
+	   
+
        }
+
 
    );
 }
@@ -213,9 +219,16 @@ function criaURL (text){
     return text;
 }
 
+export function cadastro_campanha_realizado(){
+   let $template = document.querySelector("#cadastro_campanha_realizado");
+   $viewer.innerHTML = $template.innerHTML;
+}
+
+
 //falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
 export function pesquisa_campanha(){
 	location.hash = "#/campanha/pesquisa/";
+
 
 	let template = document.querySelector('#pesquisa_da_campanha');
 	$viewer.innerHTML = template.innerHTML;
@@ -225,8 +238,8 @@ export function pesquisa_campanha(){
 	
 		function enviar_pesquisa(){
 			console.log('enviando cadastro');
-			let $formulario = document.querySelector("form");
-			let pesquisa = $formulario.pesquisa.value;
+			let $formulario = document.querySelector("#pesquisa");
+			let pesquisa = document.querySelector("#campo_pesquisa").value;
 			let checkbox = document.querySelector("#filtro_pesquisa");
 			let filtro;
 
@@ -236,11 +249,10 @@ export function pesquisa_campanha(){
 				filtro = "?todos=false";
 			
 			console.log(URI + '/pesquisa/' + pesquisa + filtro);
-			(async ()=>{
+			(async function fetch_pesquisa(){
 				let resposta = await fetch(URI + '/pesquisa/' + pesquisa + filtro,
 				{
 					"method":"GET",
-					'mode':'cors',
 					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`
 					}
 				});
@@ -267,17 +279,23 @@ export function pesquisa_campanha(){
 
 					let meta = document.createElement('td');
 					meta.innerText = campanha.doacoes + '/' + campanha.meta;
-					let url = campanha.identificadorURL;
-
+					
 					//quando o caso 4 estiver pronto, colocar o link do botao
 					let visualizar = document.createElement('td');
 					let botao = document.createElement('button');
 					botao.innerText = 'Visualizar campanha';
-					//tentando colocar o botao da pesquisa pra funcionar
-					botao.addEventListener('click', function viewProv(){
-						view_campanha("/#/campanhas/" + url);
-						location.hash = ("/#/campanhas/" + url);
-					});
+
+					botao.addEventListener('click', 
+						function visualizar_campanha(){
+							console.log('/campanhas/' + campanha.identificadorURL);
+							view_campanha('/campanhas/' + campanha.identificadorURL);
+
+
+					}
+					
+					
+					);
+
 					visualizar.appendChild(botao);
 
 					linha.appendChild(nome_campanha);
@@ -288,24 +306,26 @@ export function pesquisa_campanha(){
 					
 					tabela.appendChild(linha);
 				});
+			}else
 
-			}else {
 				console.log(resposta);
-			}
+
 			})();
 			
 		}
 	
+	
 	);
+
+
 
 }
 
 export function view_campanha(url_campanha){
-
-	(async() =>{
-		let resposta = await fetch(URI + url_campanha);
-
+	console.log('executa a funcao view campanha');
+	(async function fetch_view_campanha(){
 		console.log(URI + url_campanha);
+		let resposta = await fetch(URI + url_campanha);
 		
 		if(resposta.status == 202){
 			let campanha = await resposta.json();
@@ -314,36 +334,50 @@ export function view_campanha(url_campanha){
 			let template = document.querySelector('#view_campanha');
 			$viewer.innerHTML = template.innerHTML;
 
-			let formulario = document.querySelector('form');
-			formulario.nome_curto.value = campanha.nomeCurto;
-			formulario.status.value = campanha.status;
+			let formulario = document.querySelector('#formulario_campanha');
+			document.querySelector('#nome_curto').value = campanha.nomeCurto;
+			document.querySelector('#status').value = campanha.status;
 			
-			formulario.meta.value = campanha.meta;
-			formulario.data_limite.value = campanha.dataLimite;
-			formulario.descricao.value = campanha.descricao;
-			formulario.nome_usuario.value = campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
+			document.querySelector('#meta').value = campanha.meta;
+			document.querySelector('#data_limite').value = campanha.dataLimite;
+			document.querySelector('#descricao').value = campanha.descricao;
+			document.querySelector('#nome_usuario').value = campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
 			
+
 			let editar_campanha = document.querySelector('#editar_campanha');
 			editar_campanha.addEventListener('click', 
 				function habilitar_formulario(){
-					let inputs = document.querySelectorAll('form input');
+
+					let inputs = document.querySelectorAll('div input');
 					console.log(inputs)
 					inputs.forEach(elemento =>{
 						elemento.removeAttribute('readonly');
+
 					});
+
 
 				editar_campanha.innerText = "Salvar alterações";
 				//fazer a funcao salvar alteracoes com metodo put
 				editar_campanha.addEventListener('click', function salvar_alteracoes(){});
-				});
+
+
+
+			});
 
 			let num_likes = document.querySelector('#num_likes');
 			num_likes.innerText += campanha.curtidas;
 
+			let num_comentarios = document.querySelector('#num_comentarios');
+			//colocar comentarios.length quando alterar o construtor pra começar com um array vazio
+			num_comentarios.innerText += campanha.comentarios;
 			let area_comentarios = document.querySelector('#area_comentarios');
+
 
 			//trocar por um forEach que cria elementos e insere os comentários dentro da area
 			area_comentarios.innerText = campanha.comentarios;
+
+
+
 
 		}else{
 			//trocar por uma view
@@ -351,6 +385,14 @@ export function view_campanha(url_campanha){
 			console.log(resposta);
 		}
 
+
+
 	})();
 
+
+
+
+
+
 }
+
