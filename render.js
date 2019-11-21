@@ -1,12 +1,18 @@
 /* 
     Funcoes que renderizam as views da pagina
 */
-let $viewer = document.getElementById("viewer");
+let viewer = document.getElementById("viewer");
 let URI = "http://localhost:8080";
 
+/*
+
+	Funções que manipulam dados da sessão
+
+*/
 function salvarToken(token){
 	window.sessionStorage.setItem('token', token);
 }
+
 function getToken(){
 	return window.sessionStorage.getItem('token');
 }
@@ -14,194 +20,210 @@ function getToken(){
 function getEmail(){
 	return window.sessionStorage.getItem('email');
 }
+
 function salvarEmail(email){
 	window.sessionStorage.setItem('email', email);
 }
 
-// Homepage vai ser implementada no caso 9
+
+//Só o nome do ID do template já serve, não precisa colocar o #
+function carregarTemplate(templateID, locationHash){
+	//atualiza o URL
+	location.hash = locationHash;
+
+	//seleciona o template e insere na div viewer
+	let template = document.querySelector('#' + templateID);
+	viewer.innerHTML = template.innerHTML;
+}
+
+/* 
+	Funções que carregam as views, atualizando os links logo em seguida
+*/
+
+/* 
+
+	Funções da View de Login
+	Homepage vai ser implementada no caso 9
+
+*/
 export function homepage(){
     let $template = document.querySelector("#homepage");
-	$viewer.innerHTML = $template.innerHTML;
+	viewer.innerHTML = $template.innerHTML;
 }
 
 
 
+
+/* 
+
+	Funções da View de Login
+
+*/
 export function login(){
-    
-    //muda o url
-	location.hash = "#/login";
+	carregarTemplate('login', '#/login');
 
-	//seleciona o template do login e insere ele na div reservada pro formulário
-    let $template = document.querySelector("#login");
-	$viewer.innerHTML = $template.innerHTML;
-
-	//Configura o botao p/ voltar pro formulario de cadastro
-	let $botao = document.querySelectorAll("button")[1];
-	$botao.addEventListener('click', cadastro_usuarios);
+	//Configura o botao p/ voltar pro formulario de cadastro de usuarios
+	let botao = document.querySelector("#ir_para_cadastro");
+	botao.addEventListener('click', cadastro_usuarios);
 
 	//Configura o botao p/ mandar os dados de login
-	let $cadastrar = document.querySelectorAll("button")[0];
-	$cadastrar.addEventListener('click',
-
-		function fazer_login(){
-			console.log('fazendo login');
-			let $formulario = document.querySelector("#formulario_login");
-			let email = document.querySelector('#email_usuario').value;
-			let senha = document.querySelector('#senha').value;
-
-
-			(async function fetch_login(){
-				let resposta = await fetch(URI + '/auth/login', 
-				{
-					"method": "POST",
-					"body": `{"email":"${email}",
-							  "senha":"${senha}"}`,
-					"headers":{"Content-Type":"application/json"}
-				})
-					console.log("resposta:");
-					console.log(resposta);
-					
-					if(resposta.status == 200){
-						alert('Login realizado com sucesso!');
-						let dados_resposta = await resposta.json();
-						console.log(dados_resposta);
-						//salva dados da sessão (token e email)
-						salvarToken(dados_resposta.token);
-						salvarEmail(email);
-						console.log(sessionStorage);
-						homepage();
-					}else if(resposta.status == 400){
-						alert('Email e/ou senha incorreto(s)!')
-					}
-		   })();
-				
-			
-		}
-	)	
+	let botaoLogin = document.querySelector("#logar");
+	botaoLogin.addEventListener('click', fazer_login);	
+		
 }	
 
-//Renderiza o formulario de cadastro na página
+function fazer_login(){
+	console.log('fazendo login');
+	let email = document.querySelector('#email_usuario').value;
+	let senha = document.querySelector('#senha').value;
+
+	(async function fetch_login(){
+		let resposta = await fetch(URI + '/auth/login', 
+		{
+			"method": "POST",
+			"body": `{"email":"${email}",
+					  "senha":"${senha}"}`,
+			"headers":{"Content-Type":"application/json"}
+		});
+			
+		if(resposta.status == 200){
+
+			alert('Login realizado com sucesso!');
+			let dados_resposta = await resposta.json();
+
+			salvarToken(dados_resposta.token);
+			salvarEmail(email);
+
+			//retorna para a view da pagina inicial
+			homepage();
+
+		}else if(resposta.status == 400)
+			alert('Email e/ou senha incorreto(s)!')
+		
+   })();
+}
+
+
+
+
+/* 
+
+	Funções da View de Cadastro de Usuários
+
+*/
 export function cadastro_usuarios(){
-	//muda o link 
-	location.hash = "#/usuarios/cadastro";
 
-	//Recupera o template do login e insere ele na div reservada pro formulário
-    let $template = document.querySelector("#cadastro_usuarios");
-	$viewer.innerHTML = $template.innerHTML;
-
+	carregarTemplate('cadastro_usuarios','#/usuarios/cadastro');
+	
 	//Configura o botao p/ voltar pro formulario de login
-	let $login = document.querySelectorAll("button")[1];
-	$login.addEventListener('click', login);
+	let botaoirLogin = document.querySelector("#ir_para_login");
+	botaoirLogin.addEventListener('click', login);
 
 	//Configura o botao p/ mandar os dados para o cadastro
-	let $cadastrar = document.querySelectorAll("button")[0];
-	$cadastrar.addEventListener('click',
+	let botaoCadastrar = document.querySelector("#cadastrar");
+	botaoCadastrar.addEventListener('click', enviar_cadastro);
+}
 
-		function enviar_cadastro(){
-			console.log('enviando cadastro');
-			let $formulario = document.querySelector("#formulario_cadastro_usuario");
-			let primeiro_nome = document.querySelector("#primeiro_nome").value;
-			let ultimo_nome = document.querySelector("#ultimo_nome").value;
-			let email = document.querySelector("#email").value;
-			let cartao = document.querySelector("#cartao").value;
-			let senha = document.querySelector("#senha").value;
+function enviar_cadastro(){
+	let primeiro_nome = document.querySelector("#primeiro_nome").value;
+	let ultimo_nome = document.querySelector("#ultimo_nome").value;
+	let email = document.querySelector("#email").value;
+	let cartao = document.querySelector("#cartao").value;
+	let senha = document.querySelector("#senha").value;
 
-			fetch(URI + '/usuarios',
-				{
-					"method":"POST",
-					"body":`{"primeiroNome":"${primeiro_nome}",
-							 "ultimoNome":"${ultimo_nome}",
-							 "email":"${email}",
-							 "cartaoDeCredito":"${cartao}",
-							 "senha": "${senha}"}`,
-					"headers":{"Content-Type":"application/json"}
-				})
-			.then(resposta => {
-				if(resposta.status == 201){cadastro_usuario_realizado()}
+	(async function fetch_cadastro_usuario(){
+		let resposta = await fetch(URI + '/usuarios',
+		{
+			"method":"POST",
+			"body":`{"primeiroNome":"${primeiro_nome}",
+					 "ultimoNome":"${ultimo_nome}",
+					 "email":"${email}",
+					 "cartaoDeCredito":"${cartao}",
+					 "senha": "${senha}"}`,
+			"headers":{"Content-Type":"application/json"}
+		});
 
-				else if(resposta.status == 400){
-					alert('Email ja cadastrado!')
-				}
-			});
+		if(resposta.status == 201)
+			cadastro_usuario_realizado();
 
-		}
-
-
-	);
+		else if(resposta.status == 400)
+			alert('Email ja cadastrado!');
+		
+	})();
+	
 }
 
 export function cadastro_usuario_realizado(){
-    let $template = document.querySelector("#cadastro_realizado");
-	$viewer.innerHTML = $template.innerHTML;
 
-	let $login = document.querySelector("button");
-	$login.addEventListener('click', login);
+    let template = document.querySelector("#cadastro_usuario_realizado");
+	viewer.innerHTML = template.innerHTML;
+
+	let botaoTesteLogin = document.querySelector("button");
+	botaoTesteLogin.addEventListener('click', login);
+
 }
 
 
-export function cadastro_campanha(){
-    
-    //atualiza o link
-    location.hash = "#/campanha"
 
-    //Recupera o template do login e insere ele na div reservada pro formulário
-    let $template = document.querySelector("#cadastro_campanha");
-    $viewer.innerHTML = $template.innerHTML;
+
+/*
+
+	Funções da view de Cadastro de Campanhas
+
+*/
+export function cadastro_campanha(){
+	
+	carregarTemplate('cadastro_campanha', '#/campanha');
 
     //Configura o botao p/ mandar os dados para o cadastro da campanha
-	let $salvar = document.querySelector('#salvar_campanha');
-    $salvar.addEventListener('click',
-
-    function envia_cadastro_campanha(){
-       console.log('enviando o cadastro da campanha');
-       let $formulario = document.querySelector("formulario_cadastro_campanha");
-       let nome_curto = document.querySelector("#nome_curto").value;
-	   let descricao = document.querySelector("#descricao").value;
-	   //ano-mes-dia
-       let data_limite = document.querySelector("#data_limite").value;
-       let meta = document.querySelector("#meta").value;
-	   let identificadorURL = criaURL(nome_curto);
+	let botaoSalvar = document.querySelector('#salvar_campanha');
+    botaoSalvar.addEventListener('click', envia_cadastro_campanha);
+}
 
 
-	   console.log( data_limite);
+function envia_cadastro_campanha(){
+	let nome_curto = document.querySelector("#nome_curto").value;
+	let descricao = document.querySelector("#descricao").value;
+	//configurar formato da data para : ano-mes-dia
+	let data_limite = document.querySelector("#data_limite").value;
+	let meta = document.querySelector("#meta").value;
 
-	   //voltar com
-	   (async function fetch_cadastro_campanha(){
-		   let resposta = await fetch(URI + '/campanhas',
-				{
-					"method":"POST",
-					"body":`{"nomeCurto":"${nome_curto}",
-								"Meta":"${meta}",
-								"Descricao":"${descricao}",
-								"identificadorURL":"${identificadorURL}",
-								"emailDono":"${getEmail()}",
-								"DataLimite":"${data_limite}"}`,
-					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
-				});
-
-		    if(resposta.status==201){
-				let dados_resposta = await resposta.json();
-				console.log(dados_resposta);
-				alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
-				/* colocar acesso direto pra campanha */
-		   } else if (resposta.status == 400)
-				alert('Já existe campanha com esse nome');
-		   else if(resposta.status == 401)
-				alert('É necessário fazer login para usar esta função')
-			else if(resposta.status == 500)
-		   		console.log(resposta);
-
-		   
-	   
-
-	   })();
-	   
-	   
-
-       }
+	let identificadorURL = criaURL(nome_curto);
 
 
-   );
+	console.log( data_limite);
+
+	(async function fetch_cadastro_campanha(){
+		let resposta = await fetch(URI + '/campanhas',
+			 {
+				 "method":"POST",
+				 "body":`{"nomeCurto":"${nome_curto}",
+							 "meta":"${meta}",
+							 "descricao":"${descricao}",
+							 "identificadorURL":"${identificadorURL}",
+							 "emailDono":"${getEmail()}",
+							 "dataLimite":"${data_limite}"}`,
+				 "headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
+			 });
+
+		if(resposta.status==201){
+
+			 let dados_resposta = await resposta.json();
+			 console.log(dados_resposta);
+			 view_campanha(identificadorURL);
+			 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + URI + "#/campanha/"+identificadorURL);
+			 
+		} else if (resposta.status == 400)
+			 alert('Já existe campanha com esse nome');
+
+		else if(resposta.status == 401)
+			alert('É necessário fazer login para usar esta função');
+
+		else if(resposta.status == 500)
+			console.log(resposta);
+
+	})();	
+
 }
 
 /* Funcao que transforma uma string 
@@ -219,150 +241,145 @@ function criaURL (text){
     return text;
 }
 
-export function cadastro_campanha_realizado(){
-   let $template = document.querySelector("#cadastro_campanha_realizado");
-   $viewer.innerHTML = $template.innerHTML;
-}
 
 
-//falta terminar o template, trocar as rotas do backend, ver se envia a pesquisa como json ou no link
+
+/*
+
+	Funções da view de Pesquisa de Campanhas
+
+*/
 export function pesquisa_campanha(){
-	location.hash = "#/campanha/pesquisa/";
-
-
-	let template = document.querySelector('#pesquisa_da_campanha');
-	$viewer.innerHTML = template.innerHTML;
 	
-	let botao = document.querySelector('#pesquisar_campanha');
-	botao.addEventListener('click',
+	carregarTemplate('pesquisa_da_campanha','#/campanha/pesquisa/');
 	
-		function enviar_pesquisa(){
-			console.log('enviando cadastro');
-			let $formulario = document.querySelector("#pesquisa");
-			let pesquisa = document.querySelector("#campo_pesquisa").value;
-			let checkbox = document.querySelector("#filtro_pesquisa");
-			let filtro;
-
-			if(checkbox.checked)
-				filtro = "?todos=true";
-			else
-				filtro = "?todos=false";
-			
-			console.log(URI + '/pesquisa/' + pesquisa + filtro);
-			(async function fetch_pesquisa(){
-				let resposta = await fetch(URI + '/pesquisa/' + pesquisa + filtro,
-				{
-					"method":"GET",
-					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`
-					}
-				});
-				if(resposta.status == 202){
-				console.log(resposta);
-				let dados = await resposta.json();
-				console.log(dados);
-
-				let resultado_pesquisa = document.querySelector('#resultado_pesquisa');
-				$viewer.innerHTML += resultado_pesquisa.innerHTML;
-				
-				let tabela = document.querySelector('table');
-				dados.forEach(campanha => {
-					let linha = document.createElement('tr');
-
-					let nome_campanha = document.createElement('td');
-					nome_campanha.innerText = campanha.nomeCurto;
-
-					let data_limite = document.createElement('td');
-					data_limite.innerText = campanha.dataLimite;
-
-					let status = document.createElement('td');
-					status.innerText = campanha.status;
-
-					let meta = document.createElement('td');
-					meta.innerText = campanha.doacoes + '/' + campanha.meta;
-					
-					//quando o caso 4 estiver pronto, colocar o link do botao
-					let visualizar = document.createElement('td');
-					let botao = document.createElement('button');
-					botao.innerText = 'Visualizar campanha';
-
-					botao.addEventListener('click', 
-						function visualizar_campanha(){
-							console.log('/campanhas/' + campanha.identificadorURL);
-							view_campanha('/campanhas/' + campanha.identificadorURL);
-
-
-					}
-					
-					
-					);
-
-					visualizar.appendChild(botao);
-
-					linha.appendChild(nome_campanha);
-					linha.appendChild(data_limite);
-					linha.appendChild(status);
-					linha.appendChild(meta);
-					linha.appendChild(visualizar);
-					
-					tabela.appendChild(linha);
-				});
-			}else
-
-				console.log(resposta);
-
-			})();
-			
-		}
-	
-	
-	);
-
-
+	//Configura o botão que envia os dados necessários para pesquisar as campanhas p/ o backend
+	let botao = document.querySelector('#botao_pesquisar_campanha');
+	botao.addEventListener('click',	enviar_pesquisa);
 
 }
 
+//Função que envia os dados necessários p/ o backend
+function enviar_pesquisa(){
+
+	let campo_pesquisa = document.querySelector("#campo_pesquisa").value;	
+	let checkbox = document.querySelector("#filtro_pesquisa");
+	let filtro;
+	//atualizar o endereco
+	if(checkbox.checked)
+		filtro = "?todos=true";
+	else
+		filtro = "?todos=false";
+	
+	(async function fetch_pesquisa(){
+		console.log(URI + '/pesquisa/' + campo_pesquisa + filtro)
+		let resposta = await fetch(URI + '/pesquisa/' + campo_pesquisa + filtro,
+		{
+			"method":"GET",
+			"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`
+			}
+		});
+		console.log(resposta)
+
+		if(resposta.status == 202){
+			let dados = await resposta.json();
+			/* Inserindo o começo da tabela que mostra o resultado da busca */
+			let div_resultado = document.querySelector('#resultado');
+			let resultado_pesquisa = document.querySelector('#resultado_pesquisa');
+			div_resultado.innerHTML = resultado_pesquisa.innerHTML;
+		
+			/* Inserindo os dados na tabela */
+			let tabela = document.querySelector('table');
+
+			dados.forEach(campanha => {
+
+				let nome_campanha = criarCelula(campanha.nomeCurto);
+				let data_limite = criarCelula(campanha.dataLimite);
+				let status = criarCelula(campanha.status);
+				let meta = criarCelula(campanha.doacoes + '/' + campanha.meta);
+			
+				/* Criando botao de visualizar a campanha encontrada */
+				let visualizar = document.createElement('td');
+				let botao = document.createElement('button');
+				botao.innerText = 'Visualizar campanha';
+
+				botao.addEventListener('click', 
+					function visualizar_campanha(){ // essa funcao tem que ficar aqui por causa do closure
+						console.log(campanha.identificadorURL);
+						view_campanha(campanha.identificadorURL);
+						
+					}				
+				);
+
+				visualizar.appendChild(botao);
+				
+				
+				let celulas = [nome_campanha, data_limite, status, meta, visualizar];
+				let linha = criarLinha(celulas);
+
+				tabela.appendChild(linha);
+		});
+
+	}//else if(resposta.status == 404){
+	// 	alert('Não foi encontrada nenhuma campanha com esses parâmetros');
+	// }
+	else
+
+		console.log(resposta);
+
+	})();
+	
+}
+//Funções para ajudar na criação da tabela resultado
+// testar só adicionando com o appendchild
+function criarCelula(conteudo){
+	let celula = document.createElement('td');
+	celula.innerText = conteudo;
+	return celula;
+}
+
+function criarLinha(arrayComCelulas){
+	let linhaTabela = document.createElement('tr');
+
+	arrayComCelulas.forEach(celula => {
+		linhaTabela.appendChild(celula);
+	});
+
+	return linhaTabela;
+}
+
+/*
+
+	Funções da View de Acesso direto à campanha 
+
+*/
+
+// url_campanha = campanha.identificador_unico
 export function view_campanha(url_campanha){
 	console.log('executa a funcao view campanha');
+
 	(async function fetch_view_campanha(){
-		console.log(URI + url_campanha);
-		let resposta = await fetch(URI + url_campanha);
+		
+		let resposta = await fetch(URI + '/campanhas/'+ url_campanha);
 		
 		if(resposta.status == 202){
+			
 			let campanha = await resposta.json();
 			console.log(campanha);
+			carregarTemplate('view_campanha', '/campanhas/' + url_campanha)
 			
-			let template = document.querySelector('#view_campanha');
-			$viewer.innerHTML = template.innerHTML;
-
-			let formulario = document.querySelector('#formulario_campanha');
-			document.querySelector('#nome_curto').value = campanha.nomeCurto;
-			document.querySelector('#status').value = campanha.status;
+			preencherCampo('nome_curto', campanha.nomeCurto);
+			preencherCampo('status', campanha.status);
+			preencherCampo('data_limite', campanha.dataLimite);
+			preencherCampo('descricao', campanha.descricao);
+			preencherCampo('meta', campanha.meta);
 			
-			document.querySelector('#meta').value = campanha.meta;
-			document.querySelector('#data_limite').value = campanha.dataLimite;
-			document.querySelector('#descricao').value = campanha.descricao;
-			document.querySelector('#nome_usuario').value = campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
+			document.querySelector('#usuario_dono').innerText+= campanha.usuarioDono.primeiroNome + ' ' + campanha.usuarioDono.ultimoNome;
 			
 
-			let editar_campanha = document.querySelector('#editar_campanha');
-			editar_campanha.addEventListener('click', 
-				function habilitar_formulario(){
-
-					let inputs = document.querySelectorAll('div input');
-					console.log(inputs)
-					inputs.forEach(elemento =>{
-						elemento.removeAttribute('readonly');
-
-					});
-
-
-				editar_campanha.innerText = "Salvar alterações";
-				//fazer a funcao salvar alteracoes com metodo put
-				editar_campanha.addEventListener('click', function salvar_alteracoes(){});
-
-
-
-			});
+			if(campanha.usuarioDono.email == getEmail()){
+				habilitarEdicaoCampanha();
+			}
 
 			let num_likes = document.querySelector('#num_likes');
 			num_likes.innerText += campanha.curtidas;
@@ -370,11 +387,10 @@ export function view_campanha(url_campanha){
 			let num_comentarios = document.querySelector('#num_comentarios');
 			//colocar comentarios.length quando alterar o construtor pra começar com um array vazio
 			num_comentarios.innerText += campanha.comentarios;
+
 			let area_comentarios = document.querySelector('#area_comentarios');
-
-
 			//trocar por um forEach que cria elementos e insere os comentários dentro da area
-			area_comentarios.innerText = campanha.comentarios;
+			//if(campanha.comentarios.length > 0){preenche com os comentarios}
 
 
 
@@ -386,13 +402,42 @@ export function view_campanha(url_campanha){
 		}
 
 
-
 	})();
 
 
+}
+//Cria um botao que habilita os inputs e altera a funcao deste para fazer um fetch pra api
+function habilitarEdicaoCampanha(){
+	let botaoEditarCampanha = document.createElement('button');
+	botaoEditarCampanha.setAttribute('id','#editar_campanha')
+	botaoEditarCampanha.innerText = 'Editar Campanha';
+
+	botaoEditarCampanha.addEventListener('click', 
+		function habilitar_formulario(){
+
+			let inputs = document.querySelectorAll('div input');
+			console.log(inputs)
+			inputs.forEach(elemento =>{
+				elemento.removeAttribute('readonly');
+
+			});
+
+			let descricao = document.querySelector('#descricao');
+			descricao.removeAttribute('readonly');
+		botaoEditarCampanha.innerText = "Salvar alterações";
+		//fazer a funcao salvar alteracoes com metodo put
+		botaoEditarCampanha.addEventListener('click', function salvar_alteracoes(){});
 
 
 
+		}
+	);
+	let div_editar = document.querySelector('#edicao_campanha'); 
+	div_editar.appendChild(botaoEditarCampanha);
 
 }
 
+// Só o nome do id, sem o #
+function preencherCampo(idCampo, conteudo){
+	document.querySelector('#' + idCampo).value = conteudo;
+}

@@ -18,7 +18,7 @@ nav{
 footer{
 	background-color: #B0C4DE;
     /*
-        até que se encontre uma solucao definitiva pra esse cara
+        até que se encontre uma solucao definitiva pra esse cara:
     position: absolute;
     */
 	width: 100%;
@@ -41,26 +41,55 @@ li {
     float: left;
 }
 
-li a {
+li button {
     display: block;
     color: white;
+    background-color: black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-    background-color: #111;
+li button:hover {
+    background-color: red;
 }
 body{
     /*para preservar meus olhos*/
     background-color: #4682B4;
 }
 
-table{
-    border: 2px solid #111; 
+
+
+td{border: 2px solid black;}
+
+/* Coluna Nome da Campanha */
+tr:nth-child(1){
+    background: brown;
+    color:black;
 }
+
+/* Coluna Data Limite */
+tr :nth-child(2){
+    max-width: 125px;
+    text-align: center;
+}
+/* Coluna Status */
+tr :nth-child(3){
+    width: 100px;
+    text-align: center;
+}
+/* Coluna Doação/Meta */
+tr :nth-child(4){
+    width: 100px;
+    text-align: center;
+   
+}
+/* Coluna Visualizar */
+tr:nth-child(5) {
+    width: 100px;
+}
+
+
 /* Classes */
 .formulario{
     margin: auto;
@@ -82,6 +111,9 @@ table{
 .clear{
     clear: both;
 }
+
+
+
 /* IDs */
 #viewer{
     height: 100%;
@@ -97,15 +129,16 @@ table{
    
 }
 
-#descricao_campanha{
+#descricao{
+    height: 200px; 
+    width: 875px;
     margin: 10px;
-    border: 7px;
-    border-color: black;
-    width: 880px;
-
+    
 }
-#comentarios{
+
+#area_comentarios{
+    border: 2px;
+    border-radius: 5px;
     background: white;
-    height: 300px;
-    margin:10px;
+    height: 100px;
 }
