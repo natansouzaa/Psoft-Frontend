@@ -185,7 +185,7 @@
         </template>
 
         <template id='formato_comentario'>
-            <div class='caixa_comentario'>
+            <div>
                 <p class='usuario_comentario'></p>
                 <hr>
                 <div class='texto_comentario'></div>
@@ -193,7 +193,18 @@
                 <hr>
                 <div class='botoes_comentario'>
                     <button class='responder_comentario'>Responder Comentário</button>
-                    <button class='mostrar_respostas'>Mostrar Respostas</button>
+                </div>
+            </div>
+        </template>
+        
+        <template id='formato_novo_comentario'>
+            <div id='novo_comentario'>
+                <br>
+                <textarea id='texto_novo_comentario'></textarea>
+                <hr>
+                <div>
+                    <button id='enviar_comentario'> Enviar Comentário </button>
+                    <button id='cancelar_comentario'> Cancelar Comentário </button>
                 </div>
             </div>
         </template>

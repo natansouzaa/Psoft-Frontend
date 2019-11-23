@@ -371,74 +371,36 @@ export function view_campanha(url_campanha){
 			carregarTemplate('view_campanha', '/campanhas/' + url_campanha);
 			preencherInformacoesCampanha(campanha);
 
-			let botaoComentar = document.querySelector('#botao_comentar');
-			botaoComentar.addEventListener('click', function mostrarTelaNovoComentario(){
-				
-				let novo_comentario = criarNovoComentario(campanha.id);
-				area_comentarios.insertAdjacentElement('afterbegin', novo_comentario);
-
-			});
-
-			let area_comentarios = document.querySelector('#area_comentarios');
-			
-			if(campanha.comentarios.length > 0){
-				//mudar essa funcao pra ela ficar mais geral, pra executar ela denovo quando um novo comentario foi criado
-				(function construirAreaComentarios(){
-					campanha.comentarios.forEach(comentario =>{
-						let div_comentario = criarComentario(comentario);
-						div_comentario.classList.add('comentario');
-
-
-						let respostas = document.createElement('div');
-
-						if(comentario.respostas.length > 0){
-
-							let mostrar_respostas = document.createElement('button');
-							mostrar_respostas.innerText = 'Mostrar respostas';
-							div_comentario.lastChild.appendChild(mostrar_respostas);
-
-							mostrar_respostas.addEventListener('click', 
-								
-								function mostrar_respostas(){
-									comentario.respostas.forEach(resposta =>{
-										let div_resposta = criarComentario(resposta);
-										div_resposta.classList.add('resposta');
-										respostas.appendChild(div_resposta);
-									});
-									this.removeEventListener('click', mostrar_respostas);
-								}
-						);
-
-						
-
-					} 
-					if(getEmail() == comentario.usuario.email){
-						let deletar_comentario = document.createElement('button');
-						deletar_comentario.innerText = 'Deletar Comentário';
-						div_comentario.lastChild.appendChild(deletar_comentario);
-					}
-
-					area_comentarios.appendChild(div_comentario);
-					area_comentarios.appendChild(respostas);
-				});
-
-
-			})();
-			}else 
-				area_comentarios.innerHTML= '<p>&nbspEssa campanha ainda não possui nenhum comentário</p>';
-
+			/* Voltar a mexer nisso quando for o caso de listar doacoes */
 			let botao_doacoes = document.querySelector('#botao_doacoes');
 			let lista_doacoes = document.querySelector('#lista_doacoes');
 			botao_doacoes.addEventListener('click', function(){
 				lista_doacoes.setAttribute('style', 'display: block;')
 			});
 
+			let botaoComentar = document.querySelector('#botao_comentar');
+			botaoComentar.addEventListener('click', function mostrarTelaNovoComentario(){			
+				let novo_comentario = factoryNovoComentario(campanha, false);
+				area_comentarios.insertAdjacentElement('afterbegin', novo_comentario.caixa);
+			});
+
+			let area_comentarios = document.querySelector('#area_comentarios');
+			
+			construirAreaComentarios(campanha.comentarios);
+			
+				
 
 
-		}else{
+
+		}else if (resposta.status == 404){
 			//trocar por uma view
 			alert("Campanha nao encontrada");
 			console.log(resposta);
+		}else if (resposta.status == 401){
+			alert('É necessário fazer login para usar essa função');
+		}else{
+			console.log(resposta);
+
 		}
 
 
@@ -447,69 +409,194 @@ export function view_campanha(url_campanha){
 
 }
 
+function construirAreaComentarios(listaComentarios){
+	let area_comentarios = document.querySelector('#area_comentarios');
+	if(listaComentarios.length > 0){
+		listaComentarios.forEach(comentario =>{
 
-function criarNovoComentario(idAlvoComentario){
-	let div_comentario = document.createElement('div');
-	div_comentario.setAttribute('id','novo_comentario');
+			let div_comentario = Comentario(comentario, 'comentario');
+			
+			area_comentarios.appendChild(div_comentario.caixa);
+		});
+		
+		
 
-	div_comentario.innerHTML += '<br>';
-
-	let texto = document.createElement('textarea');
-	texto.setAttribute('id','texto_novo_comentario');
-
-	div_comentario.appendChild(texto);
-
+	}else{
+		area_comentarios.innerHTML= '<p>&nbspEssa campanha ainda não possui nenhum comentário</p>';
+	} 
 	
-	div_comentario.innerHTML += '<hr>';
+}
+/* isso aqui é uma outra forma de fazer os comentarios
 
-	let botoes = document.createElement('div');
-	div_comentario.appendChild(botoes);
+	se eu tiver tempo eu experimento dessa forma
+	senao, só excluir isso dps
 
-	let enviar_comentario = document.createElement('button');
-	enviar_comentario.setAttribute('id', 'enviar_comentario');
-	botoes.appendChild(enviar_comentario);
-	enviar_comentario.innerText='Enviar comentario';
+*/
+function Comentario(comentario, classe){
+	let template = document.querySelector('#formato_comentario');
+	let caixa_comentario = document.createElement('div');
+	caixa_comentario.innerHTML = template.innerHTML;
 
-	let cancelar_comentario = document.createElement('button');
-	cancelar_comentario.setAttribute('id', 'cancelar_comentario');
-	botoes.appendChild(cancelar_comentario);
-	cancelar_comentario.innerText='Cancelar comentario';
+	let c = {
+		objetoComentario: comentario,
+		caixa: caixa_comentario.children[0],
+		nomeUsuario: caixa_comentario.children[0].children[0],
+		textoComentario: caixa_comentario.children[0].children[2],
+		botoes: caixa_comentario.children[0].children[5],
+		botaoResponderComentario: caixa_comentario.children[0].children[5].children[0],
+		botaoMostrarRespostas: caixa_comentario.children[0].children[5].children[1],	
+		botaoDeletarComentario: null
+	};
 
-	//funcao de enviar comentario
-	enviar_comentario.addEventListener('click', function enviarComentario(){
+
+	c.caixa.classList.add(classe);
+	/* Coloca as informacoes do comentario dentro da caixa */
+	(function preencherConteudo(){
+		c.nomeUsuario.innerText = comentario.usuario.primeiroNome + " " + comentario.usuario.ultimoNome;
+		c.textoComentario.innerHTML = comentario.texto;
+	})();
+	/*
+		Cria o botao de deletar comentário
+	*/
+	if(getEmail() == comentario.usuario.email){
+			let deletar_comentario = document.createElement('button');
+			deletar_comentario.innerText = 'Deletar Comentário';
+			c.botaoDeletarComentario = deletar_comentario;
+			c.botoes.appendChild(deletar_comentario);
+	}
+	/* 
+		cria botao de mostrar respostas
+	*/
+	c.mostrar_respostas = function exibir_respostas(listaRespostas){
+	
+	if(listaRespostas.length > 0){
+
+		let mostrar_respostas = document.createElement('button');
+		mostrar_respostas.innerText = 'Mostrar Respostas';	
+		mostrar_respostas.addEventListener('click', 
+			
+			function mostrar_respostas(){
+				listaRespostas.forEach(resposta =>{
+					let div_resposta = Comentario(resposta, 'resposta');
+					c.caixa.insertAdjacentElement('afterend', div_resposta.caixa);
+				});
+				this.removeEventListener('click', mostrar_respostas);
+			}
+		);
+
+		c.botoes.appendChild(mostrar_respostas);
+
+	}
+	};
+
+	c.mostrar_respostas(c.objetoComentario.respostas);
+	/* Faz a funcao de responder comentario */
+
+	c.botaoResponderComentario.addEventListener('click',function mostrarTelaNovoComentario(){			
+		let novo_comentario = factoryNovoComentario(c, true);
+		c.caixa.insertAdjacentElement('afterend', novo_comentario.caixa);
+	});
+
+	return c;
+
+}
+// a campanha em si ou o objeto que contem a postagem de comentario
+function factoryNovoComentario(alvoComentario,ehResposta){
+	let template = document.querySelector('#formato_novo_comentario');
+	let caixa_comentario = document.createElement('div');
+	caixa_comentario.innerHTML = template.innerHTML;
+
+	let c = {
+		alvoComentario: alvoComentario,
+		caixa: caixa_comentario.children[0],
+	};
+	c.caixaTexto = c.caixa.children[1];
+	c.botoes = c.caixa.children[3];
+	c.botaoEnviarComentario = c.botoes.children[0];
+	c.botaoCancelaComentario = c.botoes.children[1];
+
+	/*
+		Função do botão de enviar comentário
+		1- enviar
+		2- receber
+		3- colocar novo comentario
+		4- apagar a tela de escrever novo comentario
+	*/
+
+	c.botaoEnviarComentario.addEventListener('click',function enviarComentario(){
 		
 		(async function fetch_comentario(){
-			let texto = document.querySelector('#texto_novo_comentario').value;
+			let texto = c.caixaTexto.value;
 			let agora = new Date();
 			let data = agora.getFullYear() + '-' + (agora.getUTCMonth()+1) + '-' + agora.getDate();
-			let id = idAlvoComentario; 
+			 
+			if(ehResposta == true){
+				let id = alvoComentario.objetoComentario.id;
+				console.log(texto, data, id);
+				let resposta = await fetch(URI + '/comentarios/adicionarResposta',
+					{
+						"method":"POST",
+						"body":`{"texto":"${texto}",
+								"dataPostagem":"${data}",
+								"id": "${id}"}`,
+						"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
+					}
+				);
 
-			let resposta = await fetch(URI + '/comentarios/adicionarComentario',
-				{
-					"method":"POST",
-					"body":`{"texto":"${texto}",
-							  "dataPostagem":"${data}",
-							  "id": "${id}"}`,
-					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
-				}
 				
-			);
-			if(resposta.status == 201){
-				let lista_atualizada = await resposta.json();
-				//construirAreaComentarios();
-			}else{
-				console.log(resposta);
+
+				if(resposta.status == 201){
+					let lista_atualizada = await resposta.json();
+					// let novoComentario = Comentario(lista_atualizada[lista_atualizada.length-1], 'resposta');
+					// c.caixa.replaceWith(novoComentario.caixa);
+					c.caixa.remove();
+					alert('Seu comentário foi registrado');
+					alvoComentario.mostrar_respostas(lista_atualizada);		
+						
+				}else{
+					console.log(resposta);
+				}
+
+			}
+			else{ //Esse é o fetch de quando o comentario for direto pra campanha
+				let id = alvoComentario.id; 
+				let resposta = await fetch(URI + '/comentarios/adicionarComentario',
+					{
+						"method":"POST",
+						"body":`{"texto":"${texto}",
+								"dataPostagem":"${data}",
+								"id": "${id}"}`,
+						"headers":{"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`}
+					}
+				);
+
+				if(resposta.status == 201){
+
+					let lista_atualizada = await resposta.json();
+					alert('Seu comentário foi registrado');
+					c.caixa.parentNode.innerHTML= '';
+					construirAreaComentarios(lista_atualizada);
+				}else{
+					console.log(resposta);
+				}
+
 			}
 			
+
+
 
 		})();
 
 
 
-	});
+	} );
 
-	return div_comentario;
+
+
+
+	return c;
 }
+
 function preencherInformacoesCampanha(campanha){
 			
 	preencherCampo('nome_curto', campanha.nomeCurto);
@@ -530,89 +617,17 @@ function preencherInformacoesCampanha(campanha){
 	let num_comentarios = document.querySelector('#num_comentarios');
 	num_comentarios.innerText += campanha.comentarios.length;
 
-
-
-
 }
 
-function criarComentario(comentario){
-	let div_comentario = document.createElement('div');
 
-	let nome_usuario = document.createElement('p');
-	nome_usuario.innerHTML = comentario.usuario.primeiroNome + " " + comentario.usuario.ultimoNome;
-	div_comentario.appendChild(nome_usuario);
 
-	div_comentario.innerHTML += '<hr>';
 
-	let texto = document.createElement('div');
-	texto.innerHTML = comentario.texto;
-	div_comentario.appendChild(texto);
 
-	div_comentario.innerHTML += '<br>';
-	div_comentario.innerHTML += '<hr>';
 
-	let botoes = document.createElement('div');
-	div_comentario.appendChild(botoes);
-
-	let responder_comentario = document.createElement('button');
-	botoes.appendChild(responder_comentario);
-	responder_comentario.innerText='Responder comentario';
-	responder_comentario.addEventListener('click', function enviar_reposta(){
-		criarNovoComentario(comentario.id);
-	});
-	
-	return div_comentario;
-}
-
-/* isso aqui é uma outra forma de fazer os comentarios
-
-	se eu tiver tempo eu experimento dessa forma
-	senao, só excluir isso dps
-
+/*
+	Cria um botao que habilita os inputs e altera a funcao deste para fazer um fetch pra api
+		- Falta fazer a funcao que faz o fetch
 */
-function Comentario(comentario){
-	let template = document.querySelector('#formato_comentario');
-	let caixa_comentario = document.createElement('div');
-	caixa_comentario.innerHTML = template.innerHTML;
-
-	let c = {
-		objetoComentario: comentario,
-		caixa: caixa_comentario.children[0],
-		//caixa: template.innerHTML,
-		//preencherCaixa: function(){caixa.innerHTML = template.innerHTML},
-		nomeUsuario: this.caixa.children[0],
-		textoComentario: this.caixa.children[2],
-		botoes: this.caixa.children[5],
-		botaoResponderComentario: this.botoes.children[0],
-		botaoMostrarRespostas: this.botoes.children[1],
-
-		preencherConteudo : function(){
-			this.nomeUsuario.innerText = comentario.usuarioDono.primeiroNome + " " + comentario.usuarioDono.ultimoNome;
-			this.textoComentario.innerHTML = comentario.texto;
-
-		},
-		
-	};
-	/*
-		Cria o botao de deletar comentário
-	*/
-	if(getEmail() == comentario.usuario.email){
-			let deletar_comentario = document.createElement('button');
-			deletar_comentario.innerText = 'Deletar Comentário';
-			c.botaoDeletarComentario = deletar_comentario;
-			c.botoes.lastChild.appendChild(deletar_comentario);
-	}
-	
-	
-	return c;
-
-}
-
-
-
-
-
-//Cria um botao que habilita os inputs e altera a funcao deste para fazer um fetch pra api
 function habilitarEdicaoCampanha(){
 	let botaoEditarCampanha = document.createElement('button');
 	botaoEditarCampanha.setAttribute('id','#editar_campanha')
