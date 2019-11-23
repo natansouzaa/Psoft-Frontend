@@ -44,14 +44,15 @@ li {
 li button {
     display: block;
     color: white;
-    background-color: black;
+    background-color: #333;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    border: #333;
 }
 
 li button:hover {
-    background-color: red;
+    background-color: brown;
 }
 body{
     /*para preservar meus olhos*/
@@ -98,6 +99,7 @@ tr:nth-child(5) {
     background: #D2B48C;
     align-self: center;
     border-radius: 10px;
+    z-index: 1;
 }
 
 .botoes{
@@ -111,7 +113,32 @@ tr:nth-child(5) {
 .clear{
     clear: both;
 }
+.comentario{
+    background:#B0C4DE;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
+.caixa_comentario{
+    background:#B0C4DE;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
+.resposta{
+    background:rgb(122, 163, 216);
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
 
+/* .usuario_comentario{
+
+} */
 
 
 /* IDs */
@@ -126,6 +153,7 @@ tr:nth-child(5) {
 #formulario_campanha{
     width: 900px;
     padding-bottom: 5px;
+
    
 }
 
@@ -139,6 +167,33 @@ tr:nth-child(5) {
 #area_comentarios{
     border: 2px;
     border-radius: 5px;
-    background: white;
-    height: 100px;
+    background: grey;
+    min-height: 100px;
+    padding: 2px 2px;
 }
+#novo_comentario{
+    background:rgb(31, 92, 31);
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
+#novo_comentario textarea{
+    height: 100px; 
+    width: 860px;
+    margin-bottom: 10px;
+}
+
+/* 
+    Listagem com um bloco
+    que aparece em baixo do botao
+
+#lista_doacoes{
+        background-color: blue;
+        width: 150px;
+        height: 150px;
+        position: absolute;
+        margin-left: 450px;
+} */
+
+/* listagem com div que aparece em baixo*/

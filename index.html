@@ -158,6 +158,9 @@
                     <div>
                         <input type="number" step="0.01" id="meta" placeholder="Meta(R$)" readonly='true'>
                         Data limite:<input type="date" id="data_limite" readonly='true'>
+                        <button id='botao_doacoes'>Ver Doações</button>
+                        <div id='lista_doacoes'style='display:block'>                         
+                        </div>
                     </div>
                     <textarea id="descricao"  readonly='true'></textarea>
                     <span style="margin: 10px;" id='usuario_dono'>Criado por:&nbsp</span>
@@ -165,16 +168,14 @@
 
 
                 </div>
-
                 <div style="margin:0px 10px 10px 10px;">
                     <div>
                         <div id='num_likes'>Nº de likes:&nbsp</div>  <!-- &nbsp quer dizer pra deixar um espaço-->
                         <div id='num_comentarios'>Nº de comentários:&nbsp</div>
-                        <button>Curtir</button>
-                        <button>Comentar</button>
+                        <button id='curtir'>Curtir</button>
+                        <button id='botao_comentar'>Comentar</button>
                     </div>
                     <div id='area_comentarios'>
-                        <p>&nbspEssa campanha ainda não possui nenhum comentário</p>
                     </div> 
                 </div>
                 
@@ -183,6 +184,19 @@
 
         </template>
 
+        <template id='formato_comentario'>
+            <div class='caixa_comentario'>
+                <p class='usuario_comentario'></p>
+                <hr>
+                <div class='texto_comentario'></div>
+                <br>
+                <hr>
+                <div class='botoes_comentario'>
+                    <button class='responder_comentario'>Responder Comentário</button>
+                    <button class='mostrar_respostas'>Mostrar Respostas</button>
+                </div>
+            </div>
+        </template>
 
 
 
