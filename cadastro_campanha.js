@@ -24,6 +24,13 @@ function envia_cadastro_campanha(){
 	let meta = document.querySelector("#meta").value;
 
 	let identificadorURL = criaURL(nome_curto);
+	console.log( nome_curto);
+	console.log(descricao);
+	console.log(data_limite);
+	console.log( meta);
+	console.log( identificadorURL);
+
+
 
 	(async function fetch_cadastro_campanha(){
 		let resposta = await fetch(main.URI + '/campanhas',

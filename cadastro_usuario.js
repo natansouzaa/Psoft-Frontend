@@ -52,7 +52,9 @@ function cadastro_usuario_realizado(){
     let template = document.querySelector("#cadastro_usuario_realizado");
 	viewer.innerHTML = template.innerHTML;
 
-	let botaoTesteLogin = document.querySelector("button");
-	botaoTesteLogin.addEventListener('click', function(){main.mudarView(main.rotas.LOGIN)});
+	let botaoLogin = document.querySelector("#ir_para_login");
+	botaoLogin.addEventListener('click', function(){
+		main.mudarView(main.rotas.LOGIN);
+	});
 
 }

@@ -29,7 +29,11 @@ export function montar_view(url_campanha){
 			botao_doacoes.addEventListener('click', function(){
 				lista_doacoes.setAttribute('style', 'display: block;')
 			});
+			/* 
 
+				Botões e Funções relacionados à Área de Comentários 
+
+			*/
 			let botaoComentar = document.querySelector('#botao_comentar');
 			botaoComentar.addEventListener('click', function mostrarTelaNovoComentario(){			
 				let novo_comentario = factoryNovoComentario(campanha, false);
@@ -40,7 +44,74 @@ export function montar_view(url_campanha){
 			
 			construirAreaComentarios(campanha.comentarios);
 			
+			/* 
+
+				Botões de curtidas
+
+			*/
+			console.log(campanha);
+			let botaoCurtida = document.querySelector('#curtir');
+			/*
+				consultar se o usuario já curtiu a campanha
+			*/
+			let num_likes = document.querySelector('#num_likes');
+			num_likes.innerText = campanha.curtidas.length;
+
+			let curtiu = false;
+			campanha.curtidas.forEach(curtida=>{
+				if(curtida.usuario.email == main.getEmail()){
+					curtiu = true
+					botaoCurtida.setAttribute('style','color: blue;');
+				}
+					
+			});
+			
+			botaoCurtida.addEventListener('click', function(){
+
+				(async function enviarCurtida(){
+					let resposta = await fetch(main.URI + "/campanhas/curtida/" + campanha.id,
+					{
+						"method":"GET",
+						"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`
+						}
+					});
+					if(resposta.status == 202){
+						if(curtiu){
+							botaoCurtida.removeAttribute('style');
+							curtiu = false;
+							
+						}
+						else{
+							botaoCurtida.setAttribute('style','color: blue;');
+							curtiu = true;
+						}
+
+						let campanhaAtualizada = await resposta.json();
+						num_likes.innerText = '';
+						num_likes.innerText = campanhaAtualizada.curtidas.length;
+
+					}else{
+						console.log(resposta);
+					}
+
+
+
+
+
+
+
+				})();
+
 				
+
+			});
+
+
+
+
+
+
+
 
 
 
@@ -186,28 +257,28 @@ function factoryComentario(comentario, nivel){
 
 
 
-	}
+	
 		c.botaoDeletarComentario.addEventListener('click', function(){
-		let idComentario = c.objetoComentario.id;
-		console.log(idComentario);
-		(async function fetch_cadastro_usuario(){
-			let resposta = await fetch(main.URI + '/comentarios/removerComentario/' + idComentario,
-			{
-				"method":"DELETE",
-				"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`}
-			});
-			console.log(resposta)
-			if(resposta.status == 201){
-				alert('Comentário Excluído');
-				let dados = await resposta.json();
-				construirAreaComentarios(dados);
-			}else{console.log(resposta)}
+			let idComentario = c.objetoComentario.id;
+			console.log(idComentario);
+			(async function fetch_cadastro_usuario(){
+				let resposta = await fetch(main.URI + '/comentarios/removerComentario/' + idComentario,
+				{
+					"method":"DELETE",
+					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`}
+				});
+				console.log(resposta)
+				if(resposta.status == 201){
+					alert('Comentário Excluído');
+					let dados = await resposta.json();
+					construirAreaComentarios(dados);
+				}else{console.log(resposta)}
 
 
-		})();
+			})();
 
-	});
-
+		});
+	}
 
 
 	
@@ -261,8 +332,6 @@ function factoryNovoComentario(alvoComentario, ehResposta){
 
 				if(resposta.status == 201){
 					let lista_atualizada = await resposta.json();
-					// let novoComentario = Comentario(lista_atualizada[lista_atualizada.length-1], 'resposta');
-					// c.caixa.replaceWith(novoComentario.caixa);
 					c.caixa.remove();
 					alert('Seu comentário foi registrado');
 					alvoComentario.mostrar_respostas(lista_atualizada);		
@@ -329,11 +398,8 @@ function preencherInformacoesCampanha(campanha){
 		habilitarEdicaoCampanha();
 	}
 
-	let num_likes = document.querySelector('#num_likes');
-	num_likes.innerText += campanha.curtidas;
+	
 
-	let num_comentarios = document.querySelector('#num_comentarios');
-	num_comentarios.innerText += campanha.comentarios.length;
 
 }
 
