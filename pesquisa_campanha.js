@@ -80,9 +80,10 @@ function enviar_pesquisa(){
 				tabela.appendChild(linha);
 		});
 
-	}//else if(resposta.status == 404){
-	// 	alert('Não foi encontrada nenhuma campanha com esses parâmetros');
-	// }
+	}
+	else if(resposta.status == 401){
+		alert('É necessário fazer login para utilizar essa função');
+	}
 	else
 
 		console.log(resposta);

@@ -63,7 +63,9 @@ export function montar_view(url_campanha){
 
 function construirAreaComentarios(listaComentarios){
 	let area_comentarios = document.querySelector('#area_comentarios');
+	area_comentarios.innerHTML='';
 	if(listaComentarios.length > 0){
+
 		listaComentarios.forEach(comentario =>{
 
 			let div_comentario = Comentario(comentario, 'comentario');
@@ -96,8 +98,9 @@ function Comentario(comentario, classe){
 		textoComentario: caixa_comentario.children[0].children[2],
 		botoes: caixa_comentario.children[0].children[5],
 		botaoResponderComentario: caixa_comentario.children[0].children[5].children[0],
-		botaoMostrarRespostas: caixa_comentario.children[0].children[5].children[1],	
-		botaoDeletarComentario: null
+		botaoMostrarRespostas: null,	
+		botaoDeletarComentario: null,
+		div_lista_respostas: null
 	};
 
 
@@ -107,6 +110,8 @@ function Comentario(comentario, classe){
 		c.nomeUsuario.innerText = comentario.usuario.primeiroNome + " " + comentario.usuario.ultimoNome;
 		c.textoComentario.innerHTML = comentario.texto;
 	})();
+
+
 	/*
 		Cria o botao de deletar comentário
 	*/
@@ -115,28 +120,68 @@ function Comentario(comentario, classe){
 			deletar_comentario.innerText = 'Deletar Comentário';
 			c.botaoDeletarComentario = deletar_comentario;
 			c.botoes.appendChild(deletar_comentario);
+
+
+
 	}
+	c.botaoDeletarComentario.addEventListener('click', function(){
+		let idComentario = c.objetoComentario.id;
+		console.log(idComentario);
+		(async function fetch_cadastro_usuario(){
+			let resposta = await fetch(main.URI + '/comentarios/removerComentario/' + idComentario,
+			{
+				"method":"DELETE",
+				"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`}
+			});
+			console.log(resposta)
+			if(resposta.status == 201){
+				
+				let dados = await resposta.json();
+				construirAreaComentarios(dados);
+			}
+
+
+		})();
+
+	});
+
+
+
 	/* 
 		cria botao de mostrar respostas
 	*/
 	c.mostrar_respostas = function exibir_respostas(listaRespostas){
 	
 	if(listaRespostas.length > 0){
+		if(c.botaoMostrarRespostas == null){
+			c.botaoMostrarRespostas = document.createElement('button');
+			c.botaoMostrarRespostas.innerText = 'Mostrar Respostas';
 
-		let mostrar_respostas = document.createElement('button');
-		mostrar_respostas.innerText = 'Mostrar Respostas';	
-		mostrar_respostas.addEventListener('click', 
+			c.div_lista_respostas = document.createElement('div');
+			c.caixa.insertAdjacentElement('beforeend', c.div_lista_respostas);
+		}
+
+		
+		c.botaoMostrarRespostas.addEventListener('click', 
 			
 			function mostrar_respostas(){
+				c.div_lista_respostas.innerHTML = '';
+				
+				c.div_lista_respostas.innerHTML = '<hr><br>';
 				listaRespostas.forEach(resposta =>{
 					let div_resposta = Comentario(resposta, 'resposta');
-					c.caixa.insertAdjacentElement('afterend', div_resposta.caixa);
+					c.div_lista_respostas.appendChild(div_resposta.caixa);
 				});
 				this.removeEventListener('click', mostrar_respostas);
+				this.innerText ='Esconder Respostas';
+				this.addEventListener('click', function(){
+					c.div_lista_respostas.innerHTML = '';
+					c.botaoMostrarRespostas.addEventListener('click', mostrar_respostas);
+				});
 			}
 		);
 
-		c.botoes.appendChild(mostrar_respostas);
+		c.botoes.appendChild(c.botaoMostrarRespostas);
 
 	}
 	};
