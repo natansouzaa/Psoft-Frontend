@@ -135,6 +135,14 @@ tr:nth-child(5) {
     border: 1px solid black;
     padding: 5px;
 }
+.respostaN2{
+    background: brown;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
 
 /* .usuario_comentario{
 
@@ -180,8 +188,9 @@ tr:nth-child(5) {
 }
 #novo_comentario textarea{
     height: 100px; 
-    width: 860px;
+    width: 99%;
     margin-bottom: 10px;
+    
 }
 
 /* 

@@ -68,7 +68,7 @@ function construirAreaComentarios(listaComentarios){
 
 		listaComentarios.forEach(comentario =>{
 
-			let div_comentario = Comentario(comentario, 'comentario');
+			let div_comentario = factoryComentario(comentario, 0);
 			
 			area_comentarios.appendChild(div_comentario.caixa);
 		});
@@ -86,7 +86,7 @@ function construirAreaComentarios(listaComentarios){
 	senao, só excluir isso dps
 
 */
-function Comentario(comentario, classe){
+function factoryComentario(comentario, nivel){
 	let template = document.querySelector('#formato_comentario');
 	let caixa_comentario = document.createElement('div');
 	caixa_comentario.innerHTML = template.innerHTML;
@@ -94,22 +94,85 @@ function Comentario(comentario, classe){
 	let c = {
 		objetoComentario: comentario,
 		caixa: caixa_comentario.children[0],
-		nomeUsuario: caixa_comentario.children[0].children[0],
-		textoComentario: caixa_comentario.children[0].children[2],
-		botoes: caixa_comentario.children[0].children[5],
-		botaoResponderComentario: caixa_comentario.children[0].children[5].children[0],
+		botaoResponderComentario: null,
 		botaoMostrarRespostas: null,	
 		botaoDeletarComentario: null,
 		div_lista_respostas: null
 	};
 
+	c.nomeUsuario = c.caixa.children[0];
+	c.textoComentario = c.caixa.children[2];
+	c.botoes = c.caixa.children[5];
 
-	c.caixa.classList.add(classe);
+
+	adicionarClasseCSS(c.caixa, nivel);
+	
 	/* Coloca as informacoes do comentario dentro da caixa */
 	(function preencherConteudo(){
 		c.nomeUsuario.innerText = comentario.usuario.primeiroNome + " " + comentario.usuario.ultimoNome;
 		c.textoComentario.innerHTML = comentario.texto;
 	})();
+
+	/* Faz a funcao de responder comentario */
+	/*
+		Esse if impede que a recursão dos comentários fique infinita
+		Se quiser permitir que o usuario 
+		faça a resposta da resposta da resposta... infinitamente, é 
+		só tirar esse if
+	*/
+	if(nivel < 4){
+		c.botaoResponderComentario = document.createElement('button');
+		c.botaoResponderComentario.innerText = 'Responder Comentário';
+		c.botoes.appendChild(c.botaoResponderComentario);
+	
+		c.botaoResponderComentario.addEventListener('click',function mostrarTelaNovoComentario(){			
+			let novo_comentario = factoryNovoComentario(c, true);
+			c.caixa.insertAdjacentElement('afterend', novo_comentario.caixa);
+		});
+	}
+
+	/* 
+		cria botao de mostrar respostas
+	*/
+	c.mostrar_respostas = function exibir_respostas(listaRespostas){
+	
+		if(listaRespostas.length > 0){
+			if(c.botaoMostrarRespostas == null){
+				c.botaoMostrarRespostas = document.createElement('button');
+				c.botaoMostrarRespostas.innerText = 'Mostrar Respostas';
+	
+				c.div_lista_respostas = document.createElement('div');
+				c.caixa.insertAdjacentElement('beforeend', c.div_lista_respostas);
+			}
+	
+			
+			c.botaoMostrarRespostas.addEventListener('click', 
+				
+				function mostrar_respostas(){
+					c.div_lista_respostas.innerHTML = '';
+					
+					c.div_lista_respostas.innerHTML = '<hr><br>';
+					listaRespostas.forEach(resposta =>{
+						let div_resposta = factoryComentario(resposta, nivel+1);
+						c.div_lista_respostas.appendChild(div_resposta.caixa);
+					});
+					this.removeEventListener('click', mostrar_respostas);
+					this.innerText ='Esconder Respostas';
+					this.addEventListener('click', function(){
+						c.div_lista_respostas.innerHTML = '';
+						c.botaoMostrarRespostas.innerText = 'Mostrar Respostas'; 
+						c.botaoMostrarRespostas.addEventListener('click', mostrar_respostas);
+					});
+				}
+			);
+	
+			c.botoes.appendChild(c.botaoMostrarRespostas);
+	
+		}
+		};
+	
+		c.mostrar_respostas(c.objetoComentario.respostas);
+	
 
 
 	/*
@@ -124,7 +187,7 @@ function Comentario(comentario, classe){
 
 
 	}
-	c.botaoDeletarComentario.addEventListener('click', function(){
+		c.botaoDeletarComentario.addEventListener('click', function(){
 		let idComentario = c.objetoComentario.id;
 		console.log(idComentario);
 		(async function fetch_cadastro_usuario(){
@@ -135,10 +198,10 @@ function Comentario(comentario, classe){
 			});
 			console.log(resposta)
 			if(resposta.status == 201){
-				
+				alert('Comentário Excluído');
 				let dados = await resposta.json();
 				construirAreaComentarios(dados);
-			}
+			}else{console.log(resposta)}
 
 
 		})();
@@ -147,58 +210,12 @@ function Comentario(comentario, classe){
 
 
 
-	/* 
-		cria botao de mostrar respostas
-	*/
-	c.mostrar_respostas = function exibir_respostas(listaRespostas){
 	
-	if(listaRespostas.length > 0){
-		if(c.botaoMostrarRespostas == null){
-			c.botaoMostrarRespostas = document.createElement('button');
-			c.botaoMostrarRespostas.innerText = 'Mostrar Respostas';
-
-			c.div_lista_respostas = document.createElement('div');
-			c.caixa.insertAdjacentElement('beforeend', c.div_lista_respostas);
-		}
-
-		
-		c.botaoMostrarRespostas.addEventListener('click', 
-			
-			function mostrar_respostas(){
-				c.div_lista_respostas.innerHTML = '';
-				
-				c.div_lista_respostas.innerHTML = '<hr><br>';
-				listaRespostas.forEach(resposta =>{
-					let div_resposta = Comentario(resposta, 'resposta');
-					c.div_lista_respostas.appendChild(div_resposta.caixa);
-				});
-				this.removeEventListener('click', mostrar_respostas);
-				this.innerText ='Esconder Respostas';
-				this.addEventListener('click', function(){
-					c.div_lista_respostas.innerHTML = '';
-					c.botaoMostrarRespostas.addEventListener('click', mostrar_respostas);
-				});
-			}
-		);
-
-		c.botoes.appendChild(c.botaoMostrarRespostas);
-
-	}
-	};
-
-	c.mostrar_respostas(c.objetoComentario.respostas);
-	/* Faz a funcao de responder comentario */
-
-	c.botaoResponderComentario.addEventListener('click',function mostrarTelaNovoComentario(){			
-		let novo_comentario = factoryNovoComentario(c, true);
-		c.caixa.insertAdjacentElement('afterend', novo_comentario.caixa);
-	});
-
 	return c;
 
 }
-// a campanha em si ou o objeto que contem a postagem de comentario
-function factoryNovoComentario(alvoComentario,ehResposta){
+// alvoComentario é a campanha em si ou o objeto que contem a postagem de comentario
+function factoryNovoComentario(alvoComentario, ehResposta){
 	let template = document.querySelector('#formato_novo_comentario');
 	let caixa_comentario = document.createElement('div');
 	caixa_comentario.innerHTML = template.innerHTML;
@@ -289,6 +306,10 @@ function factoryNovoComentario(alvoComentario,ehResposta){
 	} );
 
 
+	/* Botao de cancelar comentario */
+	c.botaoCancelaComentario.addEventListener('click', function(){
+		c.caixa.remove();
+	});
 
 
 	return c;
@@ -358,4 +379,9 @@ function habilitarEdicaoCampanha(){
 // Só o nome do id, sem o #
 function preencherCampo(idCampo, conteudo){
 	document.querySelector('#' + idCampo).value = conteudo;
+}
+
+function adicionarClasseCSS(caixa, nivel){
+	let classesCSS=['comentario','resposta','respostaN2'];
+	caixa.classList.add(classesCSS[nivel % 3]);
 }
