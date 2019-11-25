@@ -187,12 +187,12 @@
 
         <template id='formato_comentario'>
             <div>
-                <p class='usuario_comentario'></p>
+                <p></p>
                 <hr>
-                <div class='texto_comentario'></div>
+                <div></div>
                 <br>
                 <hr>
-                <div class='botoes_comentario'></div>
+                <div></div>
             </div>
         </template>
         
@@ -208,7 +208,25 @@
             </div>
         </template>
 
+        <template id='view_usuario'>
+            <div class = "formulario" id='formulario_usuario'>
+                <div id="dadosUsuario">
+                    <h2 id="nomeUsuario" ></h2>
+                    <hr style="width: 300px;">
+                    <p id="emailUsuario">E-mail:&nbsp</p>
+                </div>
+                <br>
+                <p>Campanhas Criadas por este usuário:</p>
+                <div id="campanhasCriadas">
+                    <input type="input" placeholder="Buscar campanhas por palavra chave" id="buscaCampanhas">
+                    <button id="enviarBusca">Buscar</button>
+                    <div id="buscaResultado"></div>
+                </div>
+               
 
+            </div>
+
+        </template>
 
 
 

@@ -4,6 +4,8 @@ import * as cadastro_campanha from "./cadastro_campanha.js";
 import * as pesquisa_campanha from "./pesquisa_campanha.js";
 import * as view_campanha from "./view_campanha.js";
 import * as homepage from "./homepage.js";
+import * as view_usuario from "./view_usuario.js";
+
 
 /* 
 
@@ -19,7 +21,8 @@ export const rotas = {
 	LOGIN:'/login',
 	CADASTRO_CAMPANHAS:'/campanha',
 	PESQUISA_CAMPANHAS:'/campanha/pesquisa/',
-	VIEW_CAMPANHAS:'/campanhas/'
+	VIEW_CAMPANHAS:'/campanhas/',
+	VIEW_USUARIOS:'/usuarios/' 
 };
 
 
@@ -86,33 +89,30 @@ navPesquisarCampanha.addEventListener('click', function(){mudarView(rotas.PESQUI
 	no link (carrega a pagina quando alguem digita o link direto)
 */
 async function carregaPagina(){
-	let hash = location.hash;
-	let endereco = hash.substring(1,hash.length);
-	console.log('endereco : ' + endereco);
-	switch(endereco){
-		case rotas.HOMEPAGE:
-			homepage.montar_view();
-			break;
-		case rotas.CADASTRO_USUARIOS: 
-			cadastro_usuario.montar_view();
-			break;
-		case rotas.LOGIN: 
-			login.montar_view();
-			break;
-		case rotas.CADASTRO_CAMPANHAS:
-			cadastro_campanha.montar_view();
-			break;
-		case rotas.PESQUISA_CAMPANHAS:
-			pesquisa_campanha.montar_view();
-			break;
-		default: 
-			let identificadorURL = endereco.substring(11, endereco.length);
-			await view_campanha.montar_view(identificadorURL);
-			break;
-	}
-		
-}
+    let hash = location.hash;
+    let endereco = hash.substring(1,hash.length);
+    console.log('endereco : ' + endereco);
 
+    if (endereco === rotas.HOMEPAGE){
+        homepage.montar_view();
+    } else if (endereco === rotas.CADASTRO_USUARIOS){
+        cadastro_usuario.montar_view();
+    } else if (endereco === rotas.LOGIN){
+        login.montar_view();
+    } else if (endereco === rotas.CADASTRO_CAMPANHAS){
+        cadastro_campanha.montar_view();
+    } else if (endereco === rotas.PESQUISA_CAMPANHAS){
+        pesquisa_campanha.montar_view();
+    } else if (endereco.includes(rotas.VIEW_CAMPANHAS)){
+        let identificadorURL = endereco.substring(11, endereco.length);
+        await view_campanha.montar_view(identificadorURL);
+    } else if (endereco.includes(rotas.VIEW_USUARIOS)){
+		let email = endereco.substring(10, endereco.length);
+		console.log("email: " + email);
+        await view_usuario.montar_view(email);
+    }
+
+}
 carregaPagina();
 
 window.addEventListener("hashchange", carregaPagina);

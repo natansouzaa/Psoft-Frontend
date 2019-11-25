@@ -16,16 +16,17 @@ nav{
 	margin: 0px 5px 5px 5px;
 }
 footer{
-	background-color: #B0C4DE;
+	background-color: #A020F0;
     /*
         até que se encontre uma solucao definitiva pra esse cara:
     position: absolute;
     */
-	width: 100%;
+    color: white;
+    /* position:fixed; */
+    width: 100%;
+    bottom:0;
 	text-align: center;
 	margin-top: 10px;
-    bottom:0;
-	margin: 10px 5px 0px 5px;
 
 }
 
@@ -34,7 +35,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #A020F0;
 }
 
 li {
@@ -44,19 +45,20 @@ li {
 li button {
     display: block;
     color: white;
-    background-color: #333;
+    background-color: #A020F0;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    border: #333;
+    border: white;
 }
 
 li button:hover {
-    background-color: brown;
+    background-color: #4B0082;
 }
 body{
     /*para preservar meus olhos*/
-    background-color: #4682B4;
+    background-color: #A4A4A4;
+    height: 100%;
 }
 
 
@@ -65,8 +67,8 @@ td{border: 2px solid black;}
 
 /* Coluna Nome da Campanha */
 tr:nth-child(1){
-    background: brown;
-    color:black;
+    background: #4B0082;
+    color:white;
 }
 
 /* Coluna Data Limite */
@@ -96,10 +98,11 @@ tr:nth-child(5) {
     margin: auto;
     width: 255px;
     /*Apenas pra visualizar melhor a div, dps retirar*/
-    background: #D2B48C;
+    background: #4B0082;
     align-self: center;
     border-radius: 10px;
     z-index: 1;
+    color:white;
 }
 
 .botoes{
@@ -114,21 +117,21 @@ tr:nth-child(5) {
     clear: both;
 }
 .comentario{
-    background:#B0C4DE;
+    background:#808080;
     margin-bottom: 10px;
     border-radius: 10px;
     border: 1px solid black;
     padding: 5px;
 }
 .caixa_comentario{
-    background:#B0C4DE;
+    background:#A020F0;
     margin-bottom: 10px;
     border-radius: 10px;
     border: 1px solid black;
     padding: 5px;
 }
 .resposta{
-    background:rgb(122, 163, 216);
+    background:#A9A9A9;
     margin-left: 20px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -136,7 +139,7 @@ tr:nth-child(5) {
     padding: 5px;
 }
 .respostaN2{
-    background: brown;
+    background: #D3D3D3;
     margin-left: 20px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -151,7 +154,7 @@ tr:nth-child(5) {
 
 /* IDs */
 #viewer{
-    height: 100%;
+    min-height: 82vh;
 }
 #cadastro_realizado{
 
@@ -165,6 +168,11 @@ tr:nth-child(5) {
    
 }
 
+#formulario_usuario{
+    width: 900px;
+    padding: 20px;
+}
+
 #descricao{
     height: 200px; 
     width: 875px;
@@ -175,12 +183,12 @@ tr:nth-child(5) {
 #area_comentarios{
     border: 2px;
     border-radius: 5px;
-    background: grey;
+    background: #363636;
     min-height: 100px;
     padding: 2px 2px;
 }
 #novo_comentario{
-    background:rgb(31, 92, 31);
+    background:#363636;
     margin-bottom: 10px;
     border-radius: 10px;
     border: 1px solid black;
