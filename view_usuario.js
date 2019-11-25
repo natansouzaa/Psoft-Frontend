@@ -13,7 +13,7 @@ export function montar_view(emailUsuario){
 
         if(resposta.status == 200){
             let usuario = await resposta.json();
-            console.log(usuario)
+
             /* Preenche informações do Usuário */
             let nomeUsuario = document.querySelector("#nomeUsuario");
             let emailUsuario = document.querySelector("#emailUsuario");
@@ -30,7 +30,7 @@ export function montar_view(emailUsuario){
      
             if(requisicao.status == 200){
                 let listaCampanhas = await requisicao.json();
-                console.log(listaCampanhas)
+
                 let tabela = factoryTabela(listaCampanhas);
                 divBusca.appendChild(tabela.tabela);
 
@@ -78,7 +78,7 @@ function factoryLinhaTabela(campanha){
     l.linha.appendChild(l.visualizar);
     l.visualizar.appendChild(l.botaoVisualizar);
 
-    /* Preenchendo o conteúdo da tabela */
+    /* Preenchendo o conteúdo da linha */
     l.nomeCampanha.innerHTML = l.campanha.nomeCurto;
     l.botaoVisualizar.innerText = "Visualizar Campanha"
     l.botaoVisualizar.addEventListener("click",function(){
@@ -104,7 +104,7 @@ function factoryTabela(listaDeCampanhas){
 
     t.nomeCampanha.innerText = "Nome da Campanha";
 
-    /* Função que cria as linhas das tabelas */
+    /* Função que cria as outras linhas da tabela */
     if(t.lista.length > 0){
         t.lista.forEach(campanha =>{
             let c = factoryLinhaTabela(campanha);
@@ -114,12 +114,6 @@ function factoryTabela(listaDeCampanhas){
 
     }
     
-
-
-
-
-
-    console.log(t)
     return t;
 }
 

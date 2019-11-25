@@ -6,7 +6,7 @@ import * as main from "./app.js";
 
 */
 
-// url_campanha = campanha.identificador_unico
+// url_campanha = campanha.identificadorURL
 export function montar_view(url_campanha){
 
 	(async function fetch_view_campanha(){
@@ -46,7 +46,7 @@ export function montar_view(url_campanha){
 			
 			/* 
 
-				Botões de curtidas
+				Botão de curtidas
 
 			*/
 			console.log(campanha);
@@ -65,7 +65,7 @@ export function montar_view(url_campanha){
 				}
 					
 			});
-			
+			/* Salvar a curtida do usuário */
 			botaoCurtida.addEventListener('click', function(){
 
 				(async function enviarCurtida(){
@@ -94,24 +94,9 @@ export function montar_view(url_campanha){
 						console.log(resposta);
 					}
 
-
-
-
-
-
-
 				})();
 
-				
-
 			});
-
-
-
-
-
-
-
 
 
 
@@ -151,13 +136,18 @@ function construirAreaComentarios(listaComentarios){
 	} 
 	
 }
-/* isso aqui é uma outra forma de fazer os comentarios
-
-	se eu tiver tempo eu experimento dessa forma
-	senao, só excluir isso dps
-
+/* 
+	Cria um objeto que contém referências úteis:
+		- referência para o objeto Comentário vindo do backend que conté, os dados de texto e usuario
+		- referência para os elementos HTML que compõem a div que representa um comentário na DOM
+		- referência para algumas funções que vão ser usadas por outros objetos/funções
 */
 function factoryComentario(comentario, nivel){
+	/* 
+		Cria as referências dos elementos HTML
+		Os atributos que começam em null dependem de alguma condição para existir
+			Ex: Só existe botao de mostrar resposta se o comentário tiver pelo menos 1 resposta
+	*/
 	let template = document.querySelector('#formato_comentario');
 	let caixa_comentario = document.createElement('div');
 	caixa_comentario.innerHTML = template.innerHTML;
@@ -285,7 +275,10 @@ function factoryComentario(comentario, nivel){
 	return c;
 
 }
-// alvoComentario é a campanha em si ou o objeto que contem a postagem de comentario
+
+
+
+// alvoComentario é a campanha em si ou o objeto que contem a postagem de comentario (gerado pelo factoryComentario)
 function factoryNovoComentario(alvoComentario, ehResposta){
 	let template = document.querySelector('#formato_novo_comentario');
 	let caixa_comentario = document.createElement('div');
@@ -315,7 +308,7 @@ function factoryNovoComentario(alvoComentario, ehResposta){
 			let agora = new Date();
 			let data = agora.getFullYear() + '-' + (agora.getUTCMonth()+1) + '-' + agora.getDate();
 			 
-			if(ehResposta == true){
+			if(ehResposta == true){  // Esse é o fetch quando o comentário criado é uma resposta
 				let id = alvoComentario.objetoComentario.id;
 				console.log(texto, data, id);
 				let resposta = await fetch(main.URI + '/comentarios/adicionarResposta',
@@ -341,7 +334,7 @@ function factoryNovoComentario(alvoComentario, ehResposta){
 				}
 
 			}
-			else{ //Esse é o fetch de quando o comentario for direto pra campanha
+			else{ //Esse é o fetch de quando o comentario for relacionado à campanha
 				let id = alvoComentario.id; 
 				let resposta = await fetch(main.URI + '/comentarios/adicionarComentario',
 					{
@@ -384,6 +377,8 @@ function factoryNovoComentario(alvoComentario, ehResposta){
 	return c;
 }
 
+
+
 function preencherInformacoesCampanha(campanha){
 			
 	preencherCampo('nome_curto', campanha.nomeCurto);
@@ -398,14 +393,7 @@ function preencherInformacoesCampanha(campanha){
 		habilitarEdicaoCampanha();
 	}
 
-	
-
-
 }
-
-
-
-
 
 
 /*

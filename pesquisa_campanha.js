@@ -9,7 +9,7 @@ import * as main from "./app.js";
 */
 export function montar_view(){
 	
-	main.carregarTemplate('#pesquisa_da_campanha','#/campanha/pesquisa/');
+	main.carregarTemplate('#pesquisa_da_campanha','#/campanhas/pesquisa');
 	
 	//Configura o botão que envia os dados necessários para pesquisar as campanhas p/ o backend
 	let botao = document.querySelector('#botao_pesquisar_campanha');
@@ -62,12 +62,9 @@ function enviar_pesquisa(){
 				botao.innerText = 'Visualizar campanha';
 
 				botao.addEventListener('click', 
-					function visualizar_campanha(){ // essa funcao tem que ficar aqui por causa do closure
-						console.log(main.rotas.VIEW_CAMPANHAS + campanha.identificadorURL);
+					function visualizar_campanha(){
 						main.mudarView(main.rotas.VIEW_CAMPANHAS + campanha.identificadorURL);
-                        
-                        // view_campanha(campanha.identificadorURL);
-						
+                        						
 					}				
 				);
 
@@ -85,14 +82,12 @@ function enviar_pesquisa(){
 		alert('É necessário fazer login para utilizar essa função');
 	}
 	else
-
 		console.log(resposta);
 
 	})();
 	
 }
 //Funções para ajudar na criação da tabela resultado
-// testar só adicionando com o appendchild
 function criarCelula(conteudo){
 	let celula = document.createElement('td');
 	celula.innerText = conteudo;

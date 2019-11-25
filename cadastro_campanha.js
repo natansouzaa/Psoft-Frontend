@@ -1,7 +1,6 @@
 import * as main from "./app.js";
 
 
-
 /*
 
 	Funções da view de Cadastro de Campanhas
@@ -9,7 +8,7 @@ import * as main from "./app.js";
 */
 export function montar_view(){
 	
-	main.carregarTemplate('#cadastro_campanha', '#/campanha');
+	main.carregarTemplate('#cadastro_campanha', '#/campanhas/cadastro');
 
     //Configura o botao p/ mandar os dados para o cadastro da campanha
 	let botaoSalvar = document.querySelector('#salvar_campanha');
@@ -24,13 +23,6 @@ function envia_cadastro_campanha(){
 	let meta = document.querySelector("#meta").value;
 
 	let identificadorURL = criaURL(nome_curto);
-	console.log( nome_curto);
-	console.log(descricao);
-	console.log(data_limite);
-	console.log( meta);
-	console.log( identificadorURL);
-
-
 
 	(async function fetch_cadastro_campanha(){
 		let resposta = await fetch(main.URI + '/campanhas',
@@ -47,11 +39,11 @@ function envia_cadastro_campanha(){
 
 		if(resposta.status==201){
 
-			 let dados_resposta = await resposta.json();
-             console.log(dados_resposta);
+			 let novaCampanha = await resposta.json();
+			 
              /* Muda para a view da campanha */
-			 main.mudarView(main.rotas.VIEW_CAMPANHAS + identificadorURL);
-			 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + main.URI + "#/campanha/"+identificadorURL);
+			 main.mudarView(main.rotas.VIEW_CAMPANHAS + novaCampanha.identificadorURL);
+			 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + main.URI + "#/campanha/"+novaCampanha.identificadorURL);
 			 
 		} else if (resposta.status == 400)
 			 alert('Já existe campanha com esse nome');

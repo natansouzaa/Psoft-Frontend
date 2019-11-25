@@ -19,8 +19,8 @@ export const rotas = {
 	HOMEPAGE:'',
 	CADASTRO_USUARIOS:'/usuarios/cadastro',
 	LOGIN:'/login',
-	CADASTRO_CAMPANHAS:'/campanha',
-	PESQUISA_CAMPANHAS:'/campanha/pesquisa/',
+	CADASTRO_CAMPANHAS:'/campanhas/cadastro',
+	PESQUISA_CAMPANHAS:'/campanhas/pesquisa',
 	VIEW_CAMPANHAS:'/campanhas/',
 	VIEW_USUARIOS:'/usuarios/' 
 };
@@ -63,25 +63,11 @@ export function carregarTemplate(templateID, rotaDaView){
         do app.js executa a função de criar a view correspondente
 
 */
-// Em caso de view da campanha, usar location.hash direto com = rotas['VIEW_CAMPANHAS'] + identificadorURL
+// Em caso de view da campanha, usar com: rotas.['VIEW_CAMPANHAS'] + identificadorURL
 export function mudarView(nomeDaView){
 	console.log(nomeDaView)
 	location.hash = nomeDaView;
 }
-
-
-//Botões de Navegação
-let navHomepage = document.querySelector('#nav_homepage');
-let navCadastroUsuario = document.querySelector('#nav_cadastrar_usuario');
-let navLogin = document.querySelector('#nav_login');
-let navCadastroCampanha = document.querySelector('#nav_cadastrar_campanha');
-let navPesquisarCampanha = document.querySelector('#nav_pesquisar_campanha');
-
-navHomepage.addEventListener('click', function(){mudarView(rotas.HOMEPAGE)});
-navCadastroUsuario.addEventListener('click', function(){mudarView(rotas.CADASTRO_USUARIOS)});
-navLogin.addEventListener('click', function(){mudarView(rotas.LOGIN)});
-navCadastroCampanha.addEventListener('click', function(){mudarView(rotas.CADASTRO_CAMPANHAS)});
-navPesquisarCampanha.addEventListener('click', function(){mudarView(rotas.PESQUISA_CAMPANHAS)});
 
 
 /*

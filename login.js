@@ -18,6 +18,7 @@ export function montar_view(){
 		
 }	
 
+//envia os dados do login para receber o token
 function fazer_login(){
 	console.log('fazendo login');
 	let email = document.querySelector('#email_usuario').value;
@@ -37,6 +38,7 @@ function fazer_login(){
 			alert('Login realizado com sucesso!');
 			let dados_resposta = await resposta.json();
 
+			//Salva os dados da sessão
 			main.salvarToken(dados_resposta.token);
 			main.salvarEmail(email);
 
