@@ -57,7 +57,7 @@ async function fetch_cadastro_campanha(nome_curto,descricao,data_limite,meta,ide
 		 
 		 /* Muda para a view da campanha */
 		 main.mudarView(main.rotas.VIEW_CAMPANHAS + novaCampanha.identificadorURL);
-		 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + main.URI + "#/campanha/"+novaCampanha.identificadorURL);
+		 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + main.URI + "#/campanhas/"+novaCampanha.identificadorURL);
 		 
 	} else if (resposta.status == 400)
 		 alert('Já existe campanha com esse nome');
@@ -81,7 +81,8 @@ function criaURL (text){
     text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i');
     text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o');
     text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u');
-    text = text.replace(new RegExp('[Ç]','gi'), 'c');
+	text = text.replace(new RegExp('[Ç]','gi'), 'c');
+	text = text.replace(new RegExp('\\s+','gi'), ' ');
     text = text.replace(new RegExp('[ ]','gi'), '-');
     text = text.replace(new RegExp('[,]','gi'), '');
     return text;

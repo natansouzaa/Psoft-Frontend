@@ -49,14 +49,14 @@ export function montar_view(emailUsuario){
       
 
             });
-
             }
         }else if (resposta.status == 400){
-            alert("Usuário não encontrado!");
+            alert("Usuário não encontrado");
         }else if (resposta.status == 405){
             alert("URL inválida");
+        }else if (resposta.status == 500){
+            alert("Problema no servidor, tente novamente mais tarde");
         }
-
     })();
 
 }

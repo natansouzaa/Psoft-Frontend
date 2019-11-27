@@ -33,7 +33,6 @@ ul {
     background-color: #A020F0;
     width: 70%;
     float: left;
-
 }
 
 li {
@@ -229,4 +228,17 @@ tr:nth-child(5) {
 #top_campanhas table{
     width: 50%;margin: auto;
     text-align: center;
+}
+
+#area_login{
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 30%;
+    float: left;
+    height: 47px;
+    background-color: #363636;
+
 }
