@@ -3,11 +3,8 @@
     <head>
         <meta charset="utf-8">
         <title>AJuDE</title>
-        <script type="module" src="app.js"></script>   
-
-
+        <script type="module" src="/scripts/app.js"></script>   
         <link rel="stylesheet" href="estilo.css">
-        <link text = "text/javascript" rel="import" href="templates.html">
         <link rel="icon" type="imagem/png" href="/icone.png"/>   
     </head>
         
@@ -25,13 +22,22 @@
                 <li class="links_navegacao"><a href="#/campanhas/cadastro" id="nav_cadastrar_campanha">Cadastrar Campanha</a></li>
                 <li class="links_navegacao"><a href="#/campanhas/pesquisa" id="nav_pesquisar_campanha">Pesquisar Campanha</a></li>
             </ul>
+            <div id="area_login"></div>
         </nav>
 
         <div id = "viewer"></div>
 
 
         <template id = "homepage">
-            <h1 style="text-align: center">homepage - falta implementar</h1>
+            <h1 style="text-align: center">TOP 5 Campanhas</h1>
+            <div id='botoes_criterio'>
+                <span>Ordernar por:</span> 
+                <button id="ordenacao_meta">Meta</button>
+                <button id="ordenacao_data">Data de Encerramento</button>
+                <button id="ordenacao_curtida">Curtidas</button>
+            </div>
+
+            <div id='top_campanhas'></div>
         </template>
 
 
@@ -86,7 +92,7 @@
                     </div>
                     <br>
                     <div>
-                        <input style="float:left" type="number" id="meta" placeholder="Meta(R$)" step="0.01" required='required'>
+                        <input style="float:left" type="text" id="meta" placeholder="Meta(R$)" step="0.01" required='required'>
                         <p style='margin-left: 220px;'>Data limite: <input type="date" id="data_limite" required='required'> </p> 
                     </div>
 
@@ -109,7 +115,6 @@
                     </div>
                 </div>
                 
-                        
                 
             </div>
         </template>
@@ -157,27 +162,34 @@
                     <br>
 
                     <div>
-                        <input type="number" step="0.01" id="meta" placeholder="Meta(R$)" readonly='true'>
+                        <span style="width:300px;">Doações/Meta:<p id='doacoes_meta' style="width:300px;"></p></span> 
+
+                        <!-- <input type="number" step="0.01" id="meta" placeholder="Meta(R$)" readonly='true'> -->
                         Data limite:<input type="date" id="data_limite" readonly='true'>
-                        <button id='botao_doacoes'>Ver Doações</button>
-                        <div id='lista_doacoes'style='display:block'>                         
+                        <button id='botao_doacoes'>Fazer Doação</button>
+                        <div id='nova_doacao' style='display:none'>
+                            <p>Digite o quanto deseja doar (em R$):</p>
+                            <input id='valor_doacao' type='number' step="0.01" style='margin-left: 0px;'>
+                            <button id='cancelar_doacao'>Cancelar Doação</button>
+                            <button id='confirmar_doacao'>Confirmar Doação</button>
+                        </div>
                         </div>
                     </div>
                     <textarea id="descricao"  readonly='true'></textarea>
                     <span style="margin: 10px;" id='usuario_dono'>Criado por:&nbsp</span>
                     <div id ='edicao_campanha' class="botoes"></div>                        
 
-
-                </div>
-                <div style="margin:0px 10px 10px 10px;">
-                    <div>
-                        <div>Nº de likes:&nbsp<span id='num_likes'></span></div>  <!-- &nbsp quer dizer pra deixar um espaço-->
-                        <button id='curtir'>Curtir</button>
-                        <button id='botao_comentar'>Comentar</button>
+                    <div style="margin:0px 10px 10px 10px;">
+                        <div>
+                            <div>Nº de likes:&nbsp<p id='num_likes'></p></div>  <!-- &nbsp quer dizer pra deixar um espaço-->
+                            <button id='curtir'>Curtir</button>
+                            <button id='botao_comentar'>Comentar</button>
+                        </div>
+                        <div id='area_comentarios'>
+                        </div> 
                     </div>
-                    <div id='area_comentarios'>
-                    </div> 
                 </div>
+            </div> 
                 
             </div>
 
@@ -226,6 +238,7 @@
             </div>
 
         </template>
+
 
 
 

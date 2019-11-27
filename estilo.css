@@ -17,12 +17,7 @@ nav{
 }
 footer{
 	background-color: #A020F0;
-    /*
-        até que se encontre uma solucao definitiva pra esse cara:
-    position: absolute;
-    */
     color: white;
-    /* position:fixed; */
     width: 100%;
     bottom:0;
 	text-align: center;
@@ -36,13 +31,17 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #A020F0;
+    width: 70%;
+    float: left;
+
 }
 
 li {
     float: left;
+
 }
 
-li button {
+li a {
     display: block;
     color: white;
     background-color: #A020F0;
@@ -50,9 +49,10 @@ li button {
     padding: 14px 16px;
     text-decoration: none;
     border: white;
+    
 }
 
-li button:hover {
+li a:hover {
     background-color: #4B0082;
 }
 body{
@@ -97,11 +97,9 @@ tr:nth-child(5) {
 .formulario{
     margin: auto;
     width: 255px;
-    /*Apenas pra visualizar melhor a div, dps retirar*/
     background: #4B0082;
     align-self: center;
     border-radius: 10px;
-    z-index: 1;
     color:white;
 }
 
@@ -154,8 +152,23 @@ tr:nth-child(5) {
 
 /* IDs */
 #viewer{
+    margin-top: 20px;
     min-height: 82vh;
 }
+#area_login{
+    background-color: cornsilk;
+    display: table;
+    margin:0px;
+    padding: 0px;
+    width: 20%;
+    margin-left: 75%;
+    height: 50px;
+}
+#area_login input{
+    height: 20px;
+    margin: 0;
+}
+
 #cadastro_realizado{
 
 	text-align: center;
@@ -201,16 +214,19 @@ tr:nth-child(5) {
     
 }
 
-/* 
-    Listagem com um bloco
-    que aparece em baixo do botao
+#formulario_usuario{
 
-#lista_doacoes{
-        background-color: blue;
-        width: 150px;
-        height: 150px;
-        position: absolute;
-        margin-left: 450px;
-} */
-
-/* listagem com div que aparece em baixo*/
+    width: 900px;
+    padding: 20px;
+ 
+}
+#nova_doacao{
+    padding: 5px;
+}
+#botoes_criterio{
+    text-align: center;
+}
+#top_campanhas table{
+    width: 50%;margin: auto;
+    text-align: center;
+}

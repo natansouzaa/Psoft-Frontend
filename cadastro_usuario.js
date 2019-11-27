@@ -24,27 +24,36 @@ function enviar_cadastro(){
 	let email = document.querySelector("#email").value;
 	let cartao = document.querySelector("#cartao").value;
 	let senha = document.querySelector("#senha").value;
-
-	(async function fetch_cadastro_usuario(){
-		let resposta = await fetch(main.URI + '/usuarios',
-		{
-			"method":"POST",
-			"body":`{"primeiroNome":"${primeiro_nome}",
-					 "ultimoNome":"${ultimo_nome}",
-					 "email":"${email}",
-					 "cartaoDeCredito":"${cartao}",
-					 "senha": "${senha}"}`,
-			"headers":{"Content-Type":"application/json"}
-		});
-
-		if(resposta.status == 201)
-			cadastro_usuario_realizado();
-
-		else if(resposta.status == 400)
-			alert('Email ja cadastrado!');
-		
-	})();
+	if(primeiro_nome != "" && ultimo_nome != "" && email != "" && email.includes('@')&& cartao != "" && senha != "")
+	{
+		(async function fetch_cadastro_usuario(){
+			let resposta = await fetch(main.URI + '/usuarios',
+			{
+				"method":"POST",
+				"body":`{"primeiroNome":"${primeiro_nome}",
+						 "ultimoNome":"${ultimo_nome}",
+						 "email":"${email}",
+						 "cartaoDeCredito":"${cartao}",
+						 "senha": "${senha}"}`,
+				"headers":{"Content-Type":"application/json"}
+			});
 	
+			if(resposta.status == 201)
+				cadastro_usuario_realizado();
+	
+			else if(resposta.status == 400)
+				alert('Email ja cadastrado!');
+			else if(resposta.status == 500)
+				alert('Insira um e-mail válido');
+			
+			
+		})();
+		
+	}
+	else{
+		alert('Preencha os campos corretamente');
+	}
+
 }
 
 function cadastro_usuario_realizado(){

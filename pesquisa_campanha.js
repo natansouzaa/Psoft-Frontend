@@ -38,12 +38,14 @@ function enviar_pesquisa(){
 			}
 		});
 		console.log(resposta)
-
+		let div_resultado = document.querySelector('#resultado');
+		div_resultado.innerHTML = "";
 		if(resposta.status == 202){
 			let dados = await resposta.json();
 			/* Inserindo o começo da tabela que mostra o resultado da busca */
-			let div_resultado = document.querySelector('#resultado');
+			
 			let resultado_pesquisa = document.querySelector('#resultado_pesquisa');
+			
 			div_resultado.innerHTML = resultado_pesquisa.innerHTML;
 		
 			/* Inserindo os dados na tabela */
@@ -54,7 +56,7 @@ function enviar_pesquisa(){
 				let nome_campanha = criarCelula(campanha.nomeCurto);
 				let data_limite = criarCelula(campanha.dataLimite);
 				let status = criarCelula(campanha.status);
-				let meta = criarCelula(campanha.doacoes + '/' + campanha.meta);
+				let meta = criarCelula(calcularTotalDoacoes(campanha.doacoes) + '/' + campanha.meta);
 			
 				/* Criando botao de visualizar a campanha encontrada */
 				let visualizar = document.createElement('td');
@@ -80,6 +82,8 @@ function enviar_pesquisa(){
 	}
 	else if(resposta.status == 401){
 		alert('É necessário fazer login para utilizar essa função');
+	}else if(resposta.status == 400){
+		alert('Nenhuma campanha foi encontrada');
 	}
 	else
 		console.log(resposta);
@@ -102,4 +106,11 @@ function criarLinha(arrayComCelulas){
 	});
 
 	return linhaTabela;
+}
+export function calcularTotalDoacoes(listaDeDoacoes){
+	let total = 0.0;
+	listaDeDoacoes.forEach(doacao =>{
+		total += doacao.valorDoado;
+	});
+	return total;
 }

@@ -13,7 +13,7 @@ import * as view_usuario from "./view_usuario.js";
 
 */
 export let viewer = document.getElementById("viewer");
-export const URI = "http://localhost:8080";
+export const URI = "https://aquijuntosdoandoesperanca.herokuapp.com/";
 //ENUM com as rotas das views
 export const rotas = {
 	HOMEPAGE:'',
