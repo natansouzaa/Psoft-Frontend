@@ -51,8 +51,10 @@ export function montar_view(emailUsuario){
             });
 
             }
-        }else{
-            console.log(resposta);
+        }else if (resposta.status == 400){
+            alert("Usuário não encontrado!");
+        }else if (resposta.status == 405){
+            alert("URL inválida");
         }
 
     })();
