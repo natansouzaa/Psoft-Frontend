@@ -169,6 +169,7 @@ function habilitarEdicaoCampanha(campanha){
 					if(resposta.status == 200){
 						let campanhaAtualizada = await resposta.json();
 						montar_view(campanhaAtualizada.identificadorURL);
+						alert("Suas alterações foram salvas")
 					}
 					else if (resposta.status == 401) 
 						alert('É necessário fazer login para usar essa função');
