@@ -61,6 +61,10 @@ export function montar_view(emailUsuario){
 
 }
 
+
+
+
+
 function factoryLinhaTabela(campanha, emailUsuarioCampanha){
 
     let l = {

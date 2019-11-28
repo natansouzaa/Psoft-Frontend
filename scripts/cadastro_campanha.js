@@ -1,6 +1,5 @@
 import * as main from "./app.js";
 
-
 /*
 
 	Funções da view de Cadastro de Campanhas

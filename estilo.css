@@ -31,8 +31,8 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #A020F0;
-    width: 70%;
-    float: left;
+    /* width: 70%;
+    float: left; */
 }
 
 li {
@@ -155,7 +155,7 @@ tr:nth-child(5) {
     min-height: 82vh;
 }
 #area_login{
-    background-color: cornsilk;
+    background-color: #A020F0;
     display: table;
     margin:0px;
     padding: 0px;
@@ -191,7 +191,17 @@ tr:nth-child(5) {
     margin: 10px;
     
 }
+#campanha{
+    width: 900px;
+    padding-bottom: 5px;
+}
+#informacoes_campanha{
+    padding: 10px 0px 0px 10px;
 
+}
+#area_doacoes{
+    margin-left: 10px;
+}
 #area_comentarios{
     border: 2px;
     border-radius: 5px;

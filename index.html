@@ -21,7 +21,7 @@
                 <li class="links_navegacao"><a href="#/campanhas/cadastro" id="nav_cadastrar_campanha">Cadastrar Campanha</a></li>
                 <li class="links_navegacao"><a href="#/campanhas/pesquisa" id="nav_pesquisar_campanha">Pesquisar Campanha</a></li>
             </ul>
-            <div id="area_login"></div>
+           
         </nav>
 
         <div id = "viewer"></div>
@@ -72,10 +72,9 @@
     
 
         <template id="cadastro_usuario_realizado">
-            <div style= "text-align: center;">
-                
+            <div>
                 <p>Cadastro realizado com sucesso!</p>
-                <p>Enviamos a confirmação do cadastro para seu email</p>
+                <p>Enviamos a confirmação do seu cadastro para seu email</p>
                 <div class="botoes">
                     <button id='ir_para_login'>Ir para Login</button>
                 </div>
@@ -152,47 +151,71 @@
 
 
         <template id='view_campanha'>
+            <div class = "formulario" id="campanha">
+                <div id="informacoes_campanha">
 
-            <div class = "formulario" id='formulario_campanha'>
-                <div>
-                    <div style="height: 60px;">
-                            <input type="text" id="nome_curto" value='Nome da Campanha' style="float:left;width: 50%;height: 40px;" readonly='true'>
-                            <p style= "margin-left: 60%; ">Status:<input type='text' id='status' value='Ativa' readonly='true' style="height:40px;"></p>    
+                    <div style="height: 40px;">
+                            <h2 id="nome_curto" style="float:left;width: 60%;height: 40px;"></h2>
+                            <p style= "margin-left: 75%; padding: 5px; ">Status:&nbsp<span id='status' style="height:40px;"></span></p>    
                     </div>
-                    <br>
+                    <p style="width:300px;float: left;margin-left: 0px;">Doações/Meta:&nbsp<span id='doacoes_meta' style="width:300px;"></span></p> 
+                    <p style="margin-left: 50%;">Data limite:&nbsp<span id="data_limite"></span></p>
 
-                    <div>
-                        <span style="width:300px;">Doações/Meta:<p id='doacoes_meta' style="width:300px;"></p></span> 
-
-                        <!-- <input type="number" step="0.01" id="meta" placeholder="Meta(R$)" readonly='true'> -->
-                        Data limite:<input type="date" id="data_limite" readonly='true'>
-                        <button id='botao_doacoes'>Fazer Doação</button>
-                        <div id='nova_doacao' style='display:none'>
-                            <p>Digite o quanto deseja doar (em R$):</p>
-                            <input id='valor_doacao' type='number' step="0.01" style='margin-left: 0px;'>
-                            <button id='cancelar_doacao'>Cancelar Doação</button>
-                            <button id='confirmar_doacao'>Confirmar Doação</button>
-                        </div>
-                        </div>
-                    </div>
-                    <textarea id="descricao"  readonly='true'></textarea>
-                    <span style="margin: 10px;" id='usuario_dono'>Criado por:&nbsp</span>
-                    <div id ='edicao_campanha' class="botoes"></div>                        
-
-                    <div style="margin:0px 10px 10px 10px;">
-                        <div>
-                            <div>Nº de likes:&nbsp<p id='num_likes'></p></div>  <!-- &nbsp quer dizer pra deixar um espaço-->
-                            <button id='curtir'>Curtir</button>
-                            <button id='botao_comentar'>Comentar</button>
-                        </div>
-                        <div id='area_comentarios'>
-                        </div> 
-                    </div>
                 </div>
-            </div> 
-                
+
+                <div id="area_doacoes">
+
+                    <button id="mostrar_doacoes">Ver Doações</button>
+                    <button id='botao_doacoes'>Fazer Doação</button>
+                    
+                    <div id="lista_doacoes"style="text-align: center;"></div>
+                    <div id="nova_doacao" ></div>
+
+                </div>
+
+
+                <textarea id="descricao"  readonly='true'></textarea>
+
+                <span style="margin: 10px;" id='usuario_dono'>Criado por:&nbsp</span>
+                <div id ='edicao_campanha' class="botoes"></div>                        
+
+                <div style="margin:0px 10px 10px 10px;">
+                    <div>
+                        <div>Nº de likes:&nbsp<span id='num_likes'></span></div>  <!-- &nbsp quer dizer pra deixar um espaço-->
+                        <button id='curtir'>Curtir</button>
+                        <button id='botao_comentar'>Comentar</button>
+                    </div>
+                    <div id='area_comentarios'></div> 
+                </div>
+
             </div>
 
+        </template>
+
+
+        <template id="area_nova_doacao">
+
+            <div>
+                <p>Digite o quanto deseja doar (em R$):</p>
+                <span>
+                    <input id='valor_doacao' type='number' step="0.01" style='margin-left: 0px;'>
+                    <button id="cancelar_doacao">Cancelar Doação</button>
+                    <button id='confirmar_doacao'>Confirmar Doação</button>
+                </span>
+            </div>
+
+        </template>
+
+        <template id="area_social">
+
+            <div style="margin:0px 10px 10px 10px;">
+                <div>
+                    <div>Nº de likes:&nbsp<span id='num_likes'></span></div>  <!-- &nbsp quer dizer pra deixar um espaço-->
+                    <button id='curtir'>Curtir</button>
+                    <button id='botao_comentar'>Comentar</button>
+                </div>
+                <div id='area_comentarios'></div> 
+            </div>
 
         </template>
 
@@ -227,7 +250,7 @@
                     <p id="emailUsuario">E-mail:&nbsp</p>
                 </div>
                 <br>
-                <p>Campanhas Criadas por este usuário:</p>
+                <p>Campanhas que este usuário participou:</p>
                 <div id="campanhasCriadas">
                     <input type="input" placeholder="Buscar campanhas por palavra chave" id="buscaCampanhas">
                     <button id="enviarBusca">Buscar</button>

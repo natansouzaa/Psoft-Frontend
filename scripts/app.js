@@ -90,7 +90,7 @@ async function carregaPagina(){
     } else if (endereco === rotas.PESQUISA_CAMPANHAS){
         pesquisa_campanha.montar_view();
     } else if (endereco.includes(rotas.VIEW_CAMPANHAS)){
-        let identificadorURL = endereco.substring(11, endereco.length);
+        let identificadorURL = endereco.substring(11, endereco.length); 
         await view_campanha.montar_view(identificadorURL);
     } else if (endereco.includes(rotas.VIEW_USUARIOS)){
 		let email = endereco.substring(10, endereco.length);
