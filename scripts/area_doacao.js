@@ -9,16 +9,17 @@ export function montarAreaDoacao(campanha){
 	let areaNovaDoacao = document.querySelector("#nova_doacao");
 	let areaListaDoacoes = document.querySelector("#lista_doacoes");
 	let caixa = document.querySelector("#area_doacoes");
-
+	
 	let areaDoacao = {
 		caixa: caixa,
 		areaNovaDoacao: areaNovaDoacao,
 		areaListaDoacoes: areaListaDoacoes,
 		
 	};
+	areaListaDoacoes.innerHTML = "";
 	areaDoacao.botaoMostrar = areaDoacao.caixa.children[0];
 	areaDoacao.botaoDoar = areaDoacao.caixa.children[1];
-
+	
 	areaDoacao.botaoDoar.addEventListener("click", function mostrarAreaDoacao(){
 		criarAreaNovaDoacao(areaNovaDoacao);
 		criarBotaoCancelarDoacao(areaNovaDoacao);
@@ -166,7 +167,9 @@ async function fetchDoacao(valorDoacao, campanha, data){
 
 
 		let doacoes = document.querySelector('#doacoes_meta');
-		doacoes.innerText = calcularTotalDoacoes(campanhaAtualizada.doacoes) + '/' + campanha.meta;
+		doacoes.innerText = calcularTotalDoacoes(campanhaAtualizada.doacoes) + '/' + campanhaAtualizada.meta;
+		
+		montarAreaDoacao(campanhaAtualizada);
 	}
 	else if(resposta.status == 401){
 		alert('É necessário fazer login para usar essa função');
