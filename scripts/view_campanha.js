@@ -2,12 +2,6 @@ import * as main from "./app.js";
 import {montarAreaDoacao} from "./area_doacao.js";
 import {construirAreaComentarios, factoryNovoComentario} from "./area_comentario.js";
 
-/*
-
-	Funções da View de Acesso direto à campanha 
-
-*/
-
 // url_campanha = campanha.identificadorURL
 export function montar_view(url_campanha){
 
@@ -49,14 +43,12 @@ export function montar_view(url_campanha){
 
 
 		}else if (resposta.status == 404){
-			//trocar por uma view
 			alert("Campanha nao encontrada");
-			console.log(resposta);
 		}else if (resposta.status == 401){
 			alert('É necessário fazer login para usar essa função');
-		}else{
+		}else if(resposta.status == 500){
+			alert("Problemas no servidor. Tente novamente mais tarde");	
 			console.log(resposta);
-
 		}
 
 
@@ -163,8 +155,7 @@ function habilitarEdicaoCampanha(campanha){
 
 
 			(async function fetchEdicao(){
-				console.log(descricao.value);
-				console.log(campanha.identificadorURL);
+
 					let resposta = await fetch(main.URI + "/campanhas/edicao", 
 					{
 							"method":"PUT",
@@ -179,7 +170,11 @@ function habilitarEdicaoCampanha(campanha){
 						let campanhaAtualizada = await resposta.json();
 						montar_view(campanhaAtualizada.identificadorURL);
 					}
-					else{
+					else if (resposta.status == 401) 
+						alert('É necessário fazer login para usar essa função');
+
+					else if(resposta.status == 500){
+						alert("Problemas no servidor. Tente novamente mais tarde");	
 						console.log(resposta);
 					}
 

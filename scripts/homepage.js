@@ -6,11 +6,7 @@ const FetchsURI = {
 	CURTIDA: "/ordenacao/curtida"
 };
 
-/* 
 
-	Funções da Homepage
-
-*/
 export function montar_view(){
 	main.carregarTemplate('#homepage','');
 

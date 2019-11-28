@@ -1,9 +1,4 @@
 import * as main from "./app.js";
-/* 
-
-	Funções da View de Cadastro de Usuários
-
-*/
 
 export function montar_view(){
 
@@ -45,7 +40,6 @@ function enviar_cadastro(){
 				alert('Email ja cadastrado!');
 			else if(resposta.status == 500)
 				alert('Insira um e-mail válido');
-			
 			
 		})();
 		

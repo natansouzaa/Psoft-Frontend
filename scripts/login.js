@@ -1,10 +1,5 @@
 import * as main from "./app.js";
 
-/* 
-
-	Funções da View de Login
-
-*/
 export function montar_view(){
 	main.carregarTemplate('#login', '#/login');
 
@@ -45,8 +40,13 @@ function fazer_login(){
 			//retorna para a view da pagina inicial
 			main.mudarView(main.rotas.HOMEPAGE);
 
-		}else if(resposta.status == 400)
-			alert('Email e/ou senha incorreto(s)!')
+		}else if(resposta.status == 400) alert('Email e/ou senha incorreto(s)!')
+
+		else if(resposta.status == 500){
+			alert("Problemas no servidor. Tente novamente mais tarde");	
+			console.log(resposta);
+		}
+		
 		
    })();
 }

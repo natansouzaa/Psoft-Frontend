@@ -24,9 +24,9 @@ export function construirAreaComentarios(listaComentarios){
 
 /* 
 	Cria um objeto que contém referências úteis:
-		- referência para o objeto Comentário vindo do backend que conté, os dados de texto e usuario
+		- referência para o objeto Comentário vindo do backend que contém os dados de texto e usuario
 		- referência para os elementos HTML que compõem a div que representa um comentário na DOM
-		- referência para algumas funções que vão ser usadas por outros objetos/funções
+		- algumas funções que vão ser usadas por outros objetos/funções
 */
 function factoryComentario(comentario, nivel){
 	/* 
@@ -141,19 +141,23 @@ function criaFuncaoDeletarComentario(comentario){
 
 		comentario.botaoDeletarComentario.addEventListener('click', function(){
 			let idComentario = comentario.objetoComentario.id;
-			console.log(idComentario);
 			(async function fetch_cadastro_usuario(){
 				let resposta = await fetch(main.URI + '/comentarios/removerComentario/' + idComentario,
 				{
 					"method":"DELETE",
 					"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`}
 				});
-				console.log(resposta)
 				if(resposta.status == 201){
 					alert('Comentário Excluído');
 					let dados = await resposta.json();
 					construirAreaComentarios(dados);
-				}else{console.log(resposta)}
+				}else if (resposta.status == 401) 
+					alert('É necessário fazer login para usar essa função');
+
+				else if(resposta.status == 500){
+					alert("Problemas no servidor. Tente novamente mais tarde");	
+					console.log(resposta);
+				}
 
 
 			})();
@@ -217,7 +221,6 @@ async function fetch_comentario(texto,ehResposta, alvoComentario, caixaDoComenta
 
 	if(ehResposta == true){  // Esse é o fetch quando o comentário criado é uma resposta
 		let id = alvoComentario.objetoComentario.id;
-		console.log(texto, data, id);
 		let resposta = await fetch(main.URI + '/comentarios/adicionarResposta',
 			{
 				"method":"POST",
@@ -235,7 +238,11 @@ async function fetch_comentario(texto,ehResposta, alvoComentario, caixaDoComenta
 			alert('Seu comentário foi registrado');
 			alvoComentario.mostrar_respostas(lista_atualizada);		
 				
-		}else{
+		}else if (resposta.status == 401) 
+			alert('É necessário fazer login para usar essa função');
+
+		else if(resposta.status == 500){
+			alert("Problemas no servidor. Tente novamente mais tarde");	
 			console.log(resposta);
 		}
 
@@ -258,7 +265,11 @@ async function fetch_comentario(texto,ehResposta, alvoComentario, caixaDoComenta
 			alert('Seu comentário foi registrado');
 			caixaDoComentario.parentNode.innerHTML= '';
 			construirAreaComentarios(lista_atualizada);
-		}else{
+		}else if (resposta.status == 401) 
+			alert('É necessário fazer login para usar essa função');
+
+		else if(resposta.status == 500){
+			alert("Problemas no servidor. Tente novamente mais tarde");	
 			console.log(resposta);
 		}
 

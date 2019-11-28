@@ -54,8 +54,11 @@ export function montar_view(emailUsuario){
             alert("Usuário não encontrado");
         }else if (resposta.status == 405){
             alert("URL inválida");
-        }else if (resposta.status == 500){
+        }else if (resposta.status == 401) 
+            alert('É necessário fazer login para usar essa função');
+        else if (resposta.status == 500){
             alert("Problema no servidor, tente novamente mais tarde");
+            console.log(resposta);
         }
     })();
 

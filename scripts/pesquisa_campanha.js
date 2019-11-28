@@ -1,12 +1,5 @@
 import * as main from "./app.js";
 
-
-
-/*
-
-	Funções da view de Pesquisa de Campanhas
-
-*/
 export function montar_view(){
 	
 	main.carregarTemplate('#pesquisa_da_campanha','#/campanhas/pesquisa');
@@ -30,16 +23,16 @@ function enviar_pesquisa(){
 		filtro = "?todos=false";
 	
 	(async function fetch_pesquisa(){
-		console.log(main.URI + '/pesquisa/' + campo_pesquisa + filtro)
 		let resposta = await fetch(main.URI + '/campanhas/pesquisa/' + campo_pesquisa + filtro,
 		{
 			"method":"GET",
 			"headers":{"Content-Type":"application/json","Authorization":`Bearer ${main.getToken()}`
 			}
 		});
-		console.log(resposta)
+
 		let div_resultado = document.querySelector('#resultado');
 		div_resultado.innerHTML = "";
+		
 		if(resposta.status == 202){
 			let dados = await resposta.json();
 			/* Inserindo o começo da tabela que mostra o resultado da busca */
@@ -85,8 +78,11 @@ function enviar_pesquisa(){
 	}else if(resposta.status == 400){
 		alert('Nenhuma campanha foi encontrada');
 	}
-	else
+
+	else if(resposta.status == 500){
+		alert("Problemas no servidor. Tente novamente mais tarde");	
 		console.log(resposta);
+	}
 
 	})();
 	

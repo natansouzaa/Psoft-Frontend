@@ -1,10 +1,5 @@
 import * as main from "./app.js";
 
-/*
-
-	Funções da view de Cadastro de Campanhas
-
-*/
 export function montar_view(){
 	
 	main.carregarTemplate('#cadastro_campanha', '#/campanhas/cadastro');
@@ -58,14 +53,16 @@ async function fetch_cadastro_campanha(nome_curto,descricao,data_limite,meta,ide
 		 main.mudarView(main.rotas.VIEW_CAMPANHAS + novaCampanha.identificadorURL);
 		 alert('Campanha cadastrada! Para compartilhar a campanha use o link:\n' + main.URI + "#/campanhas/"+novaCampanha.identificadorURL);
 		 
-	} else if (resposta.status == 400)
+	}else if (resposta.status == 400)
 		 alert('Já existe campanha com esse nome');
 
-	else if(resposta.status == 401)
-		alert('É necessário fazer login para usar esta função');
+	else if (resposta.status == 401) 
+		alert('É necessário fazer login para usar essa função');
 
-	else if(resposta.status == 500)
+	else if(resposta.status == 500){
+		alert("Problemas no servidor. Tente novamente mais tarde");	
 		console.log(resposta);
+	}
 
 };	
 

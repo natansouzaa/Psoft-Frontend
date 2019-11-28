@@ -65,7 +65,6 @@ export function carregarTemplate(templateID, rotaDaView){
 */
 // Em caso de view da campanha, usar com: rotas.['VIEW_CAMPANHAS'] + identificadorURL
 export function mudarView(nomeDaView){
-	console.log(nomeDaView)
 	location.hash = nomeDaView;
 }
 
@@ -77,7 +76,6 @@ export function mudarView(nomeDaView){
 async function carregaPagina(){
     let hash = location.hash;
     let endereco = hash.substring(1,hash.length);
-    console.log('endereco : ' + endereco);
 
     if (endereco === rotas.HOMEPAGE){
         homepage.montar_view();
@@ -94,7 +92,6 @@ async function carregaPagina(){
         await view_campanha.montar_view(identificadorURL);
     } else if (endereco.includes(rotas.VIEW_USUARIOS)){
 		let email = endereco.substring(10, endereco.length);
-		console.log("email: " + email);
         await view_usuario.montar_view(email);
     }
 
